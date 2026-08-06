@@ -9,9 +9,13 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "framer-motion": "^13.0.0",
+    "lucide-react": "^1.29.0",
     "next": "16.3.0",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-countup": "^6.5.3",
+    "react-dom": "19.2.8",
+    "swiper": "^14.0.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
