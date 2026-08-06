@@ -7,6 +7,8 @@ import Gallery from "@/components/Gallery";
 import Admissions from "@/components/Admissions";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import WhyChoose from "@/components/WhyChoose";
+import VisionMission from "@/components/VisionMission";
 
 
 export default function Home() {
@@ -20,6 +22,10 @@ export default function Home() {
       <Hero />
 
       <About />
+
+      <WhyChoose />
+
+      <VisionMission />
 
       <Programs />
 

@@ -1,71 +1,57 @@
 import {
   Building2,
+  Baby,
   BookOpen,
   Monitor,
-  Dumbbell,
-  Bus,
-  HeartPulse,
   ShieldCheck,
 } from "lucide-react";
 
 
 const facilities = [
   {
-    title: "Modern Classrooms",
+    title: "Daycare Area",
     description:
-      "Comfortable learning spaces designed to encourage creativity, participation, and effective learning.",
+      "The colourful and small classroom size provides an exciting environment for learning and opportunity for close personal interaction between teachers and pupils.",
+    icon: Baby,
+  },
+
+  {
+    title: "Nursery Area",
+    description:
+      "The cosy, bright, safe, welcoming and stimulating classrooms equipped with whiteboards provide a caring, fun and stimulating environment to meet the individual needs of your child.",
     icon: Building2,
   },
 
   {
-    title: "Library",
+    title: "Classrooms & Specialist Rooms",
     description:
-      "A resourceful reading environment that encourages research, imagination, and a love for learning.",
+      "Pleasantville Academy offers first class facilities in a secure and attractive building with classrooms and specialist rooms conducive for an effective teaching and learning process.",
     icon: BookOpen,
   },
 
   {
-    title: "ICT Lab",
+    title: "Creative Learning Environment",
     description:
-      "Introducing pupils to technology and digital skills needed for the modern world.",
+      "Our learning spaces provide opportunities to develop children's imaginative play, creativity, confidence, and essential life skills.",
     icon: Monitor,
   },
 
   {
-    title: "Playground & Sports",
+    title: "Safe & Secure School",
     description:
-      "A safe environment where children develop teamwork, confidence, and physical skills.",
-    icon: Dumbbell,
-  },
-
-  {
-    title: "School Transportation",
-    description:
-      "Reliable transportation support to provide convenience and safety for pupils.",
-    icon: Bus,
-  },
-
-  {
-    title: "Sick Bay",
-    description:
-      "Providing care and attention to pupils' health and wellbeing while in school.",
-    icon: HeartPulse,
-  },
-
-  {
-    title: "Security",
-    description:
-      "A secure environment where children can learn, grow, and thrive comfortably.",
+      "We provide a secure and welcoming environment where children can learn, grow, and develop comfortably under proper guidance and care.",
     icon: ShieldCheck,
   },
 ];
 
 
 export default function Facilities() {
+
   return (
+
     <section
       id="facilities"
-      className="py-20 bg-white"
+      className="py-20 bg-gray-50"
     >
 
       <div className="max-w-7xl mx-auto px-6">
@@ -78,9 +64,13 @@ export default function Facilities() {
             Our Facilities
           </h2>
 
-          <p className="mt-4 text-gray-600 max-w-3xl mx-auto">
-            Providing a supportive environment with facilities that enhance
-            learning, creativity, safety, and personal development.
+
+          <p className="mt-5 max-w-4xl mx-auto text-gray-600 leading-relaxed">
+
+            Pleasantville Academy offers first class facilities in a secure
+            and attractive building with all classrooms and specialist rooms
+            conducive for an effective teaching and learning process.
+
           </p>
 
         </div>
@@ -88,7 +78,7 @@ export default function Facilities() {
 
 
         {/* Facility Cards */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
 
           {facilities.map((facility) => {
@@ -100,26 +90,33 @@ export default function Facilities() {
 
               <div
                 key={facility.title}
-                className="group p-7 rounded-2xl bg-gray-50 border border-gray-100 hover:bg-green-800 transition duration-300"
+                className="group p-7 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition duration-300"
               >
 
-                <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center mb-5 group-hover:bg-orange-500 transition">
+
+                <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-5 group-hover:bg-orange-500 transition">
 
                   <Icon
                     size={35}
-                    className="text-orange-600 group-hover:text-white"
+                    className="text-green-700 group-hover:text-white transition"
                   />
 
                 </div>
 
 
-                <h3 className="text-xl font-bold text-gray-800 group-hover:text-white mb-3">
+
+                <h3 className="text-xl font-bold text-green-800 mb-3">
+
                   {facility.title}
+
                 </h3>
 
 
-                <p className="text-gray-600 group-hover:text-gray-200 leading-relaxed">
+
+                <p className="text-gray-600 leading-relaxed">
+
                   {facility.description}
+
                 </p>
 
 
@@ -135,6 +132,9 @@ export default function Facilities() {
 
       </div>
 
+
     </section>
+
   );
+
 }
