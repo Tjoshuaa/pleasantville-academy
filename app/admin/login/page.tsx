@@ -2,8 +2,13 @@
 
 import { FormEvent, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 
 export default function AdminLoginPage() {
+  const router = useRouter()
+  const supabase = createClient()
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -15,20 +20,19 @@ export default function AdminLoginPage() {
     setError('')
     setLoading(true)
 
-    // Supabase authentication will be connected in the next step.
-    // For now this only validates that both fields are filled.
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
 
-    if (!email || !password) {
-      setError('Please enter your email and password.')
+    if (error) {
+      setError(error.message)
       setLoading(false)
       return
     }
 
-    setError(
-      'Admin authentication has not been connected yet. We will connect Supabase next.'
-    )
-
-    setLoading(false)
+    router.push('/admin')
+    router.refresh()
   }
 
   return (
@@ -36,7 +40,6 @@ export default function AdminLoginPage() {
 
       <div className="w-full max-w-md">
 
-        {/* Logo / Heading */}
         <div className="mb-8 text-center">
 
           <Link
@@ -56,7 +59,6 @@ export default function AdminLoginPage() {
 
         </div>
 
-        {/* Login Card */}
         <div className="rounded-2xl bg-white p-8 shadow-lg">
 
           <h2 className="text-xl font-bold text-slate-900">
@@ -72,9 +74,7 @@ export default function AdminLoginPage() {
             className="mt-6 space-y-5"
           >
 
-            {/* Email */}
             <div>
-
               <label
                 htmlFor="email"
                 className="mb-2 block text-sm font-medium text-slate-700"
@@ -87,16 +87,14 @@ export default function AdminLoginPage() {
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                placeholder="admin@example.com"
+                placeholder="Enter your email"
                 autoComplete="email"
+                required
                 className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
               />
-
             </div>
 
-            {/* Password */}
             <div>
-
               <label
                 htmlFor="password"
                 className="mb-2 block text-sm font-medium text-slate-700"
@@ -111,19 +109,17 @@ export default function AdminLoginPage() {
                 onChange={(event) => setPassword(event.target.value)}
                 placeholder="Enter your password"
                 autoComplete="current-password"
+                required
                 className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-200"
               />
-
             </div>
 
-            {/* Error */}
             {error && (
               <div className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
                 {error}
               </div>
             )}
 
-            {/* Button */}
             <button
               type="submit"
               disabled={loading}
