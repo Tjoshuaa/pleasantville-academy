@@ -4,6 +4,7 @@ import About from "@/components/About";
 import Programs from "@/components/Programs";
 import Facilities from "@/components/Facilities";
 import Gallery from "@/components/Gallery";
+import Announcements from '@/components/announcements'
 import Admissions from "@/components/Admissions";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
