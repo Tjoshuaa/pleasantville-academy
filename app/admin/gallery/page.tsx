@@ -1,6 +1,11 @@
 'use client'
 
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useState,
+} from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 
@@ -10,6 +15,7 @@ type GalleryItem = {
   image_url: string | null
   category: string | null
   featured: boolean
+  media_type: 'image' | 'video'
   created_at: string
 }
 
@@ -90,12 +96,26 @@ export default function GalleryAdminPage() {
   function handleFileChange(
     event: ChangeEvent<HTMLInputElement>
   ) {
-    setFile(event.target.files?.[0] || null)
+    const selectedFile =
+      event.target.files?.[0] || null
+
+    setFile(selectedFile)
   }
 
-  async function uploadImage(selectedFile: File) {
+  function getMediaType(selectedFile: File) {
+    if (selectedFile.type.startsWith('video/')) {
+      return 'video' as const
+    }
+
+    return 'image' as const
+  }
+
+  async function uploadMedia(selectedFile: File) {
     const extension =
-      selectedFile.name.split('.').pop()?.toLowerCase() || 'jpg'
+      selectedFile.name
+        .split('.')
+        .pop()
+        ?.toLowerCase() || 'jpg'
 
     const fileName = `${Date.now()}-${Math.random()
       .toString(36)
@@ -113,7 +133,10 @@ export default function GalleryAdminPage() {
       .from('gallery')
       .getPublicUrl(filePath)
 
-    return data.publicUrl
+    return {
+      url: data.publicUrl,
+      mediaType: getMediaType(selectedFile),
+    }
   }
 
   async function handleSubmit(
@@ -130,17 +153,21 @@ export default function GalleryAdminPage() {
     }
 
     if (!editingId && !file) {
-      setError('Please select an image.')
+      setError('Please select an image or video.')
       return
     }
 
     setSaving(true)
 
     try {
-      let imageUrl: string | null = null
+      let mediaUrl: string | null = null
+      let mediaType: 'image' | 'video' = 'image'
 
       if (file) {
-        imageUrl = await uploadImage(file)
+        const uploaded = await uploadMedia(file)
+
+        mediaUrl = uploaded.url
+        mediaType = uploaded.mediaType
       }
 
       if (editingId) {
@@ -149,14 +176,16 @@ export default function GalleryAdminPage() {
           category: string
           featured: boolean
           image_url?: string
+          media_type?: 'image' | 'video'
         } = {
           title: title.trim(),
           category,
           featured,
         }
 
-        if (imageUrl) {
-          updateData.image_url = imageUrl
+        if (mediaUrl) {
+          updateData.image_url = mediaUrl
+          updateData.media_type = mediaType
         }
 
         const { error } = await supabase
@@ -166,20 +195,27 @@ export default function GalleryAdminPage() {
 
         if (error) throw error
 
-        setMessage('Gallery item updated successfully.')
+        setMessage(
+          'Gallery item updated successfully.'
+        )
       } else {
         const { error } = await supabase
           .from('gallery')
           .insert({
             title: title.trim(),
-            image_url: imageUrl,
+            image_url: mediaUrl,
             category,
             featured,
+            media_type: mediaType,
           })
 
         if (error) throw error
 
-        setMessage('Gallery image uploaded successfully.')
+        setMessage(
+          mediaType === 'video'
+            ? 'Gallery video uploaded successfully.'
+            : 'Gallery image uploaded successfully.'
+        )
       }
 
       resetForm()
@@ -247,7 +283,8 @@ export default function GalleryAdminPage() {
           </h1>
 
           <p className="mt-2 text-slate-500">
-            Upload, edit and manage Pleasantville Academy photographs.
+            Upload, edit and manage Pleasantville Academy
+            photographs and videos.
           </p>
 
         </div>
@@ -260,17 +297,19 @@ export default function GalleryAdminPage() {
           <div className="flex items-center justify-between">
 
             <div>
+
               <h2 className="text-xl font-bold text-slate-900">
                 {editingId
                   ? 'Edit Gallery Item'
-                  : 'Add Gallery Image'}
+                  : 'Add Gallery Media'}
               </h2>
 
               <p className="mt-1 text-sm text-slate-500">
                 {editingId
-                  ? 'Change the title, category or replace the image.'
-                  : 'Add a new photograph to the school gallery.'}
+                  ? 'Change the title, category or replace the image/video.'
+                  : 'Add a new photograph or video to the school gallery.'}
               </p>
+
             </div>
 
             {editingId && (
@@ -294,17 +333,29 @@ export default function GalleryAdminPage() {
 
               <label className="mb-2 block text-sm font-semibold text-slate-700">
                 {editingId
-                  ? 'Replace Image (optional)'
-                  : 'Image'}
+                  ? 'Replace Image or Video (optional)'
+                  : 'Image or Video'}
               </label>
 
               <input
                 id="gallery-file"
                 type="file"
-                accept="image/*"
+                accept="image/*,video/*"
                 onChange={handleFileChange}
                 className="w-full rounded-lg border border-slate-300 p-3"
               />
+
+              <p className="mt-2 text-xs text-slate-500">
+                You can upload JPG, PNG, WEBP and other
+                supported image formats, as well as MP4,
+                WebM and other browser-supported video formats.
+              </p>
+
+              {file && (
+                <p className="mt-2 text-sm font-medium text-green-700">
+                  Selected: {file.name}
+                </p>
+              )}
 
             </div>
 
@@ -319,7 +370,7 @@ export default function GalleryAdminPage() {
                 onChange={(event) =>
                   setTitle(event.target.value)
                 }
-                placeholder="Learning Environment"
+                placeholder="School Marching Day"
                 className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-green-700"
               />
 
@@ -359,7 +410,7 @@ export default function GalleryAdminPage() {
               />
 
               <span className="text-sm font-medium text-slate-700">
-                Featured image
+                Featured media
               </span>
 
             </label>
@@ -375,7 +426,7 @@ export default function GalleryAdminPage() {
                   ? 'Saving...'
                   : editingId
                     ? 'Save Changes'
-                    : 'Upload Image'}
+                    : 'Upload Media'}
               </button>
 
             </div>
@@ -416,9 +467,23 @@ export default function GalleryAdminPage() {
                   className="overflow-hidden rounded-2xl bg-white shadow-sm"
                 >
 
-                  <div className="h-64 bg-green-50">
+                  <div className="relative h-64 bg-slate-900">
 
-                    {item.image_url ? (
+                    {item.media_type === 'video' ? (
+                      <>
+                        <video
+                          src={item.image_url || undefined}
+                          controls
+                          playsInline
+                          preload="metadata"
+                          className="h-full w-full object-cover"
+                        />
+
+                        <span className="absolute left-3 top-3 rounded-full bg-blue-600 px-3 py-1 text-xs font-bold text-white">
+                          🎥 Video
+                        </span>
+                      </>
+                    ) : item.image_url ? (
                       <img
                         src={item.image_url}
                         alt={item.title}
@@ -427,7 +492,10 @@ export default function GalleryAdminPage() {
                     ) : (
                       <div className="flex h-full items-center justify-center text-center">
                         <div>
-                          <div className="text-4xl">📷</div>
+                          <div className="text-4xl">
+                            📷
+                          </div>
+
                           <p className="mt-3 font-semibold text-green-800">
                             Photo coming soon
                           </p>
@@ -439,13 +507,27 @@ export default function GalleryAdminPage() {
 
                   <div className="p-5">
 
-                    <h3 className="font-bold text-slate-900">
-                      {item.title}
-                    </h3>
+                    <div className="flex items-start justify-between gap-3">
 
-                    <p className="mt-1 text-sm text-slate-500">
-                      {item.category}
-                    </p>
+                      <div>
+
+                        <h3 className="font-bold text-slate-900">
+                          {item.title}
+                        </h3>
+
+                        <p className="mt-1 text-sm text-slate-500">
+                          {item.category}
+                        </p>
+
+                      </div>
+
+                      {item.featured && (
+                        <span className="rounded-full bg-yellow-100 px-2 py-1 text-xs font-bold text-yellow-700">
+                          Featured
+                        </span>
+                      )}
+
+                    </div>
 
                     <div className="mt-4 flex gap-2">
 
