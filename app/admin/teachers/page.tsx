@@ -272,17 +272,17 @@ export default function TeachersAdminPage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-100 text-slate-900">
+    <main className="min-h-screen bg-slate-950 text-slate-900">
 
       {/* HEADER */}
 
-      <header className="border-b border-slate-200 bg-white">
+      <header className="border-b border-slate-800 bg-slate-900">
 
         <div className="mx-auto max-w-7xl px-6 py-6">
 
           <Link
             href="/admin"
-            className="inline-flex items-center text-sm font-semibold text-slate-500 transition hover:text-green-800"
+            className="inline-flex items-center text-sm font-semibold text-slate-400 transition hover:text-white"
           >
             ← Back to Dashboard
           </Link>
@@ -293,17 +293,17 @@ export default function TeachersAdminPage() {
 
               <div className="flex items-center gap-3">
 
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-100 text-2xl">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-900/40 text-2xl ring-1 ring-green-800/50">
                   👩‍🏫
                 </div>
 
                 <div>
 
-                  <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+                  <h1 className="text-3xl font-bold tracking-tight text-white">
                     Teachers & Staff
                   </h1>
 
-                  <p className="mt-1 text-sm text-slate-500">
+                  <p className="mt-1 text-sm text-slate-400">
                     Manage teachers and school staff records.
                   </p>
 
@@ -316,7 +316,7 @@ export default function TeachersAdminPage() {
             <button
               type="button"
               onClick={startAddTeacher}
-              className="inline-flex items-center justify-center rounded-xl bg-green-800 px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-green-700 hover:shadow-md"
+              className="inline-flex items-center justify-center rounded-xl bg-green-700 px-5 py-3 font-semibold text-white shadow-lg shadow-green-950/30 transition hover:bg-green-600 hover:shadow-xl"
             >
               + Add Teacher / Staff
             </button>
@@ -332,14 +332,14 @@ export default function TeachersAdminPage() {
         {/* MESSAGES */}
 
         {message && (
-          <div className="mb-6 flex items-center gap-3 rounded-xl border border-green-200 bg-green-50 px-5 py-4 text-sm font-semibold text-green-800">
+          <div className="mb-6 flex items-center gap-3 rounded-xl border border-green-800/60 bg-green-950/60 px-5 py-4 text-sm font-semibold text-green-300">
             <span className="text-lg">✓</span>
             {message}
           </div>
         )}
 
         {error && (
-          <div className="mb-6 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-semibold text-red-700">
+          <div className="mb-6 flex items-start gap-3 rounded-xl border border-red-800/60 bg-red-950/60 px-5 py-4 text-sm font-semibold text-red-300">
             <span className="text-lg">!</span>
             <span>{error}</span>
           </div>
@@ -349,21 +349,21 @@ export default function TeachersAdminPage() {
 
         <div className="mb-8 grid gap-4 sm:grid-cols-3">
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-xl shadow-black/10">
 
             <div className="flex items-center justify-between">
 
               <div>
-                <p className="text-sm font-medium text-slate-500">
+                <p className="text-sm font-medium text-slate-400">
                   Total Staff
                 </p>
 
-                <p className="mt-2 text-3xl font-bold text-slate-900">
+                <p className="mt-2 text-3xl font-bold text-white">
                   {teachers.length}
                 </p>
               </div>
 
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-green-100 text-xl">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-green-900/50 text-xl ring-1 ring-green-800/50">
                 👥
               </div>
 
@@ -371,16 +371,16 @@ export default function TeachersAdminPage() {
 
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-xl shadow-black/10">
 
             <div className="flex items-center justify-between">
 
               <div>
-                <p className="text-sm font-medium text-slate-500">
+                <p className="text-sm font-medium text-slate-400">
                   Teachers
                 </p>
 
-                <p className="mt-2 text-3xl font-bold text-slate-900">
+                <p className="mt-2 text-3xl font-bold text-white">
                   {
                     teachers.filter((teacher) =>
                       (teacher.role || '')
@@ -391,7 +391,7 @@ export default function TeachersAdminPage() {
                 </p>
               </div>
 
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-100 text-xl">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-900/50 text-xl ring-1 ring-blue-800/50">
                 🎓
               </div>
 
@@ -399,21 +399,21 @@ export default function TeachersAdminPage() {
 
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-xl shadow-black/10">
 
             <div className="flex items-center justify-between">
 
               <div>
-                <p className="text-sm font-medium text-slate-500">
+                <p className="text-sm font-medium text-slate-400">
                   Showing
                 </p>
 
-                <p className="mt-2 text-3xl font-bold text-slate-900">
+                <p className="mt-2 text-3xl font-bold text-white">
                   {filteredTeachers.length}
                 </p>
               </div>
 
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-xl">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-800 text-xl text-slate-300">
                 🔎
               </div>
 
@@ -426,25 +426,25 @@ export default function TeachersAdminPage() {
         {/* FORM */}
 
         {showForm && (
-          <div className="mb-8 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div className="mb-8 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-2xl shadow-black/20">
 
-            <div className="border-b border-slate-200 bg-slate-50 px-6 py-5">
+            <div className="border-b border-slate-800 bg-slate-800/70 px-6 py-5">
 
               <div className="flex items-center justify-between gap-4">
 
                 <div>
 
-                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-800">
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-400">
                     Staff Management
                   </p>
 
-                  <h2 className="mt-1 text-xl font-bold text-slate-900">
+                  <h2 className="mt-1 text-xl font-bold text-white">
                     {editingId !== null
                       ? 'Edit Teacher / Staff'
                       : 'Add Teacher / Staff'}
                   </h2>
 
-                  <p className="mt-1 text-sm text-slate-500">
+                  <p className="mt-1 text-sm text-slate-400">
                     Enter the staff member's information below.
                   </p>
 
@@ -453,7 +453,7 @@ export default function TeachersAdminPage() {
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-500 transition hover:bg-slate-200 hover:text-slate-900"
+                  className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-400 transition hover:bg-slate-700 hover:text-white"
                 >
                   Cancel
                 </button>
@@ -471,7 +471,7 @@ export default function TeachersAdminPage() {
 
               <div className="md:col-span-2">
 
-                <h3 className="border-b border-slate-200 pb-2 text-sm font-bold uppercase tracking-wider text-green-800">
+                <h3 className="border-b border-slate-700 pb-2 text-sm font-bold uppercase tracking-wider text-green-400">
                   Staff Information
                 </h3>
 
@@ -479,7 +479,7 @@ export default function TeachersAdminPage() {
 
               <div>
 
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                <label className="mb-2 block text-sm font-semibold text-slate-300">
                   Full Name *
                 </label>
 
@@ -491,14 +491,14 @@ export default function TeachersAdminPage() {
                   }
                   placeholder="Full name"
                   required
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-green-600 focus:ring-2 focus:ring-green-900"
                 />
 
               </div>
 
               <div>
 
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                <label className="mb-2 block text-sm font-semibold text-slate-300">
                   Role / Position
                 </label>
 
@@ -509,14 +509,14 @@ export default function TeachersAdminPage() {
                     setRole(event.target.value)
                   }
                   placeholder="e.g. Mathematics Teacher"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-green-600 focus:ring-2 focus:ring-green-900"
                 />
 
               </div>
 
               <div>
 
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                <label className="mb-2 block text-sm font-semibold text-slate-300">
                   Subject / Department
                 </label>
 
@@ -527,14 +527,14 @@ export default function TeachersAdminPage() {
                     setSubject(event.target.value)
                   }
                   placeholder="e.g. Mathematics"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-green-600 focus:ring-2 focus:ring-green-900"
                 />
 
               </div>
 
               <div>
 
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                <label className="mb-2 block text-sm font-semibold text-slate-300">
                   Qualification
                 </label>
 
@@ -545,14 +545,14 @@ export default function TeachersAdminPage() {
                     setQualification(event.target.value)
                   }
                   placeholder="e.g. B.Ed, M.Ed"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-green-600 focus:ring-2 focus:ring-green-900"
                 />
 
               </div>
 
               <div>
 
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                <label className="mb-2 block text-sm font-semibold text-slate-300">
                   Employment Type
                 </label>
 
@@ -561,7 +561,7 @@ export default function TeachersAdminPage() {
                   onChange={(event) =>
                     setEmploymentType(event.target.value)
                   }
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none focus:border-green-600 focus:ring-2 focus:ring-green-900"
                 >
 
                   <option value="">
@@ -590,7 +590,7 @@ export default function TeachersAdminPage() {
 
               <div>
 
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                <label className="mb-2 block text-sm font-semibold text-slate-300">
                   Date Joined
                 </label>
 
@@ -600,7 +600,7 @@ export default function TeachersAdminPage() {
                   onChange={(event) =>
                     setDateJoined(event.target.value)
                   }
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none focus:border-green-600 focus:ring-2 focus:ring-green-900"
                 />
 
               </div>
@@ -609,7 +609,7 @@ export default function TeachersAdminPage() {
 
               <div className="mt-3 md:col-span-2">
 
-                <h3 className="border-b border-slate-200 pb-2 text-sm font-bold uppercase tracking-wider text-green-800">
+                <h3 className="border-b border-slate-700 pb-2 text-sm font-bold uppercase tracking-wider text-green-400">
                   Contact Information
                 </h3>
 
@@ -617,7 +617,7 @@ export default function TeachersAdminPage() {
 
               <div>
 
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                <label className="mb-2 block text-sm font-semibold text-slate-300">
                   Phone
                 </label>
 
@@ -628,14 +628,14 @@ export default function TeachersAdminPage() {
                     setPhone(event.target.value)
                   }
                   placeholder="Phone number"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-green-600 focus:ring-2 focus:ring-green-900"
                 />
 
               </div>
 
               <div>
 
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                <label className="mb-2 block text-sm font-semibold text-slate-300">
                   Email
                 </label>
 
@@ -646,14 +646,14 @@ export default function TeachersAdminPage() {
                     setEmail(event.target.value)
                   }
                   placeholder="Email address"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-green-600 focus:ring-2 focus:ring-green-900"
                 />
 
               </div>
 
               <div className="md:col-span-2">
 
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                <label className="mb-2 block text-sm font-semibold text-slate-300">
                   Address
                 </label>
 
@@ -664,7 +664,7 @@ export default function TeachersAdminPage() {
                     setAddress(event.target.value)
                   }
                   placeholder="Home address"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-green-600 focus:ring-2 focus:ring-green-900"
                 />
 
               </div>
@@ -673,7 +673,7 @@ export default function TeachersAdminPage() {
 
               <div className="md:col-span-2">
 
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                <label className="mb-2 block text-sm font-semibold text-slate-300">
                   Notes
                 </label>
 
@@ -684,19 +684,19 @@ export default function TeachersAdminPage() {
                   }
                   placeholder="Additional information..."
                   rows={4}
-                  className="w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className="w-full resize-none rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-green-600 focus:ring-2 focus:ring-green-900"
                 />
 
               </div>
 
               {/* ACTIONS */}
 
-              <div className="flex flex-wrap gap-3 border-t border-slate-200 pt-5 md:col-span-2">
+              <div className="flex flex-wrap gap-3 border-t border-slate-800 pt-5 md:col-span-2">
 
                 <button
                   type="submit"
                   disabled={saving}
-                  className="rounded-xl bg-green-800 px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="rounded-xl bg-green-700 px-6 py-3 font-semibold text-white shadow-lg shadow-green-950/20 transition hover:bg-green-600 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {saving
                     ? 'Saving...'
@@ -708,7 +708,7 @@ export default function TeachersAdminPage() {
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="rounded-xl border border-slate-300 bg-white px-6 py-3 font-semibold text-slate-700 transition hover:bg-slate-50"
+                  className="rounded-xl border border-slate-700 bg-slate-800 px-6 py-3 font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white"
                 >
                   Cancel
                 </button>
@@ -722,19 +722,19 @@ export default function TeachersAdminPage() {
 
         {/* SEARCH */}
 
-        <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="mb-6 rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-xl shadow-black/10">
 
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
 
             <div className="flex-1">
 
-              <label className="mb-2 block text-sm font-semibold text-slate-700">
+              <label className="mb-2 block text-sm font-semibold text-slate-300">
                 Search Teachers & Staff
               </label>
 
               <div className="relative">
 
-                <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
                   🔎
                 </span>
 
@@ -745,20 +745,20 @@ export default function TeachersAdminPage() {
                     setSearch(event.target.value)
                   }
                   placeholder="Search by name, role, subject, phone or email..."
-                  className="w-full rounded-xl border border-slate-300 bg-white py-3 pl-11 pr-4 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className="w-full rounded-xl border border-slate-700 bg-slate-800 py-3 pl-11 pr-4 text-white outline-none transition placeholder:text-slate-500 focus:border-green-600 focus:ring-2 focus:ring-green-900"
                 />
 
               </div>
 
             </div>
 
-            <div className="text-sm text-slate-500">
+            <div className="text-sm text-slate-400">
               Showing{' '}
-              <span className="font-bold text-slate-900">
+              <span className="font-bold text-white">
                 {filteredTeachers.length}
               </span>{' '}
               of{' '}
-              <span className="font-bold text-slate-900">
+              <span className="font-bold text-white">
                 {teachers.length}
               </span>{' '}
               records
@@ -772,13 +772,13 @@ export default function TeachersAdminPage() {
 
         {loading ? (
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-12 text-center shadow-xl shadow-black/10">
 
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-xl">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-900/50 text-xl">
               👩‍🏫
             </div>
 
-            <p className="mt-4 font-semibold text-slate-700">
+            <p className="mt-4 font-semibold text-slate-300">
               Loading teachers and staff...
             </p>
 
@@ -790,19 +790,19 @@ export default function TeachersAdminPage() {
 
         ) : filteredTeachers.length === 0 ? (
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-12 text-center shadow-xl shadow-black/10">
 
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-green-100 text-3xl">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-green-900/50 text-3xl">
               👩‍🏫
             </div>
 
-            <h2 className="mt-5 text-xl font-bold text-slate-900">
+            <h2 className="mt-5 text-xl font-bold text-white">
               {teachers.length === 0
                 ? 'No teachers or staff yet'
                 : 'No records found'}
             </h2>
 
-            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
+            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-400">
               {teachers.length === 0
                 ? 'Add your first teacher or staff member to begin managing your school team.'
                 : 'Try using a different name, role, subject or contact detail.'}
@@ -812,7 +812,7 @@ export default function TeachersAdminPage() {
               <button
                 type="button"
                 onClick={startAddTeacher}
-                className="mt-6 rounded-xl bg-green-800 px-5 py-3 font-semibold text-white transition hover:bg-green-700"
+                className="mt-6 rounded-xl bg-green-700 px-5 py-3 font-semibold text-white transition hover:bg-green-600"
               >
                 + Add Teacher / Staff
               </button>
@@ -828,26 +828,26 @@ export default function TeachersAdminPage() {
 
               <article
                 key={teacher.id}
-                className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg"
+                className="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-xl shadow-black/10 transition duration-200 hover:-translate-y-1 hover:border-slate-700 hover:shadow-2xl"
               >
 
                 {/* CARD TOP */}
 
-                <div className="border-b border-slate-100 bg-gradient-to-br from-green-50 to-white p-6">
+                <div className="border-b border-slate-800 bg-gradient-to-br from-green-950/70 to-slate-900 p-6">
 
                   <div className="flex items-start gap-4">
 
-                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-green-800 text-2xl text-white shadow-sm">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-green-700 text-2xl text-white shadow-lg shadow-green-950/30">
                       👩‍🏫
                     </div>
 
                     <div className="min-w-0 flex-1">
 
-                      <h2 className="truncate text-lg font-bold text-slate-900">
+                      <h2 className="truncate text-lg font-bold text-white">
                         {teacher.full_name}
                       </h2>
 
-                      <p className="mt-1 text-sm font-semibold text-green-800">
+                      <p className="mt-1 text-sm font-semibold text-green-400">
                         {teacher.role || 'Staff Member'}
                       </p>
 
@@ -869,7 +869,7 @@ export default function TeachersAdminPage() {
                         Subject
                       </span>
 
-                      <span className="text-right font-semibold text-slate-900">
+                      <span className="text-right font-semibold text-slate-200">
                         {teacher.subject || 'Not provided'}
                       </span>
 
@@ -881,7 +881,7 @@ export default function TeachersAdminPage() {
                         Qualification
                       </span>
 
-                      <span className="max-w-[60%] text-right font-semibold text-slate-900">
+                      <span className="max-w-[60%] text-right font-semibold text-slate-200">
                         {teacher.qualification || 'Not provided'}
                       </span>
 
@@ -893,7 +893,7 @@ export default function TeachersAdminPage() {
                         Employment
                       </span>
 
-                      <span className="text-right font-semibold text-slate-900">
+                      <span className="text-right font-semibold text-slate-200">
                         {teacher.employment_type || 'Not provided'}
                       </span>
 
@@ -910,7 +910,7 @@ export default function TeachersAdminPage() {
                       onClick={() =>
                         setSelectedTeacher(teacher)
                       }
-                      className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                      className="rounded-lg border border-slate-700 px-3 py-2 text-sm font-semibold text-slate-300 transition hover:bg-slate-800 hover:text-white"
                     >
                       Details
                     </button>
@@ -920,7 +920,7 @@ export default function TeachersAdminPage() {
                       onClick={() =>
                         startEditTeacher(teacher)
                       }
-                      className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
+                      className="rounded-lg bg-slate-700 px-3 py-2 text-sm font-semibold text-white transition hover:bg-slate-600"
                     >
                       Edit
                     </button>
@@ -930,7 +930,7 @@ export default function TeachersAdminPage() {
                       onClick={() =>
                         deleteTeacher(teacher)
                       }
-                      className="rounded-lg border border-red-200 px-3 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                      className="rounded-lg border border-red-800 px-3 py-2 text-sm font-semibold text-red-400 transition hover:bg-red-950/50"
                     >
                       Delete
                     </button>
@@ -954,12 +954,12 @@ export default function TeachersAdminPage() {
       {selectedTeacher && (
 
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
           onClick={() => setSelectedTeacher(null)}
         >
 
           <div
-            className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-2xl"
+            className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900 shadow-2xl"
             onClick={(event) =>
               event.stopPropagation()
             }
@@ -967,25 +967,25 @@ export default function TeachersAdminPage() {
 
             {/* MODAL HEADER */}
 
-            <div className="flex items-start justify-between border-b border-slate-200 bg-gradient-to-br from-green-50 to-white p-6">
+            <div className="flex items-start justify-between border-b border-slate-800 bg-gradient-to-br from-green-950/70 to-slate-900 p-6">
 
               <div className="flex items-center gap-4">
 
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-green-800 text-2xl text-white">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-green-700 text-2xl text-white">
                   👩‍🏫
                 </div>
 
                 <div>
 
-                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-800">
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-400">
                     Staff Profile
                   </p>
 
-                  <h2 className="mt-1 text-2xl font-bold text-slate-900">
+                  <h2 className="mt-1 text-2xl font-bold text-white">
                     {selectedTeacher.full_name}
                   </h2>
 
-                  <p className="mt-1 text-sm font-semibold text-slate-500">
+                  <p className="mt-1 text-sm font-semibold text-slate-400">
                     {selectedTeacher.role ||
                       'Staff Member'}
                   </p>
@@ -999,7 +999,7 @@ export default function TeachersAdminPage() {
                 onClick={() =>
                   setSelectedTeacher(null)
                 }
-                className="rounded-lg px-3 py-2 text-xl text-slate-400 transition hover:bg-slate-100 hover:text-slate-900"
+                className="rounded-lg px-3 py-2 text-xl text-slate-500 transition hover:bg-slate-800 hover:text-white"
               >
                 ×
               </button>
@@ -1012,11 +1012,11 @@ export default function TeachersAdminPage() {
 
               <div>
 
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
                   Role / Position
                 </p>
 
-                <p className="mt-1 font-semibold text-slate-900">
+                <p className="mt-1 font-semibold text-slate-200">
                   {selectedTeacher.role ||
                     'Not provided'}
                 </p>
@@ -1025,11 +1025,11 @@ export default function TeachersAdminPage() {
 
               <div>
 
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
                   Subject / Department
                 </p>
 
-                <p className="mt-1 font-semibold text-slate-900">
+                <p className="mt-1 font-semibold text-slate-200">
                   {selectedTeacher.subject ||
                     'Not provided'}
                 </p>
@@ -1038,11 +1038,11 @@ export default function TeachersAdminPage() {
 
               <div>
 
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
                   Qualification
                 </p>
 
-                <p className="mt-1 font-semibold text-slate-900">
+                <p className="mt-1 font-semibold text-slate-200">
                   {selectedTeacher.qualification ||
                     'Not provided'}
                 </p>
@@ -1051,11 +1051,11 @@ export default function TeachersAdminPage() {
 
               <div>
 
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
                   Employment Type
                 </p>
 
-                <p className="mt-1 font-semibold text-slate-900">
+                <p className="mt-1 font-semibold text-slate-200">
                   {selectedTeacher.employment_type ||
                     'Not provided'}
                 </p>
@@ -1064,11 +1064,11 @@ export default function TeachersAdminPage() {
 
               <div>
 
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
                   Date Joined
                 </p>
 
-                <p className="mt-1 font-semibold text-slate-900">
+                <p className="mt-1 font-semibold text-slate-200">
                   {formatDate(
                     selectedTeacher.date_joined
                   )}
@@ -1078,11 +1078,11 @@ export default function TeachersAdminPage() {
 
               <div>
 
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
                   Phone
                 </p>
 
-                <p className="mt-1 font-semibold text-slate-900">
+                <p className="mt-1 font-semibold text-slate-200">
                   {selectedTeacher.phone ||
                     'Not provided'}
                 </p>
@@ -1091,7 +1091,7 @@ export default function TeachersAdminPage() {
 
               <div className="md:col-span-2">
 
-                <h3 className="border-b border-slate-200 pb-2 text-sm font-bold uppercase tracking-wider text-green-800">
+                <h3 className="border-b border-slate-700 pb-2 text-sm font-bold uppercase tracking-wider text-green-400">
                   Contact Information
                 </h3>
 
@@ -1099,11 +1099,11 @@ export default function TeachersAdminPage() {
 
               <div className="md:col-span-2">
 
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
                   Email
                 </p>
 
-                <p className="mt-1 break-words font-semibold text-slate-900">
+                <p className="mt-1 break-words font-semibold text-slate-200">
                   {selectedTeacher.email ||
                     'Not provided'}
                 </p>
@@ -1112,11 +1112,11 @@ export default function TeachersAdminPage() {
 
               <div className="md:col-span-2">
 
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
                   Address
                 </p>
 
-                <p className="mt-1 font-semibold text-slate-900">
+                <p className="mt-1 font-semibold text-slate-200">
                   {selectedTeacher.address ||
                     'Not provided'}
                 </p>
@@ -1125,11 +1125,11 @@ export default function TeachersAdminPage() {
 
               <div className="md:col-span-2">
 
-                <h3 className="border-b border-slate-200 pb-2 text-sm font-bold uppercase tracking-wider text-green-800">
+                <h3 className="border-b border-slate-700 pb-2 text-sm font-bold uppercase tracking-wider text-green-400">
                   Notes
                 </h3>
 
-                <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-slate-700">
+                <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-slate-300">
                   {selectedTeacher.notes ||
                     'No additional notes.'}
                 </p>
@@ -1140,7 +1140,7 @@ export default function TeachersAdminPage() {
 
             {/* MODAL ACTIONS */}
 
-            <div className="flex flex-wrap justify-end gap-3 border-t border-slate-200 bg-slate-50 p-5">
+            <div className="flex flex-wrap justify-end gap-3 border-t border-slate-800 bg-slate-950 p-5">
 
               <button
                 type="button"
@@ -1149,7 +1149,7 @@ export default function TeachersAdminPage() {
                   setSelectedTeacher(null)
                   startEditTeacher(teacher)
                 }}
-                className="rounded-xl bg-slate-900 px-5 py-3 font-semibold text-white transition hover:bg-slate-700"
+                className="rounded-xl bg-green-700 px-5 py-3 font-semibold text-white transition hover:bg-green-600"
               >
                 Edit Staff Member
               </button>
@@ -1159,7 +1159,7 @@ export default function TeachersAdminPage() {
                 onClick={() =>
                   setSelectedTeacher(null)
                 }
-                className="rounded-xl border border-slate-300 bg-white px-5 py-3 font-semibold text-slate-700 transition hover:bg-slate-100"
+                className="rounded-xl border border-slate-700 bg-slate-800 px-5 py-3 font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white"
               >
                 Close
               </button>
