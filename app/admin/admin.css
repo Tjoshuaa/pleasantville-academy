@@ -1,6 +1,6 @@
 /* =========================================================
    PLEASANTVILLE ACADEMY
-   ADMIN DASHBOARD GLOBAL DESIGN
+   GLOBAL ADMIN DASHBOARD DESIGN
    ========================================================= */
 
 :root {
@@ -12,90 +12,124 @@
 
   --pv-gold-500: #c9a227;
   --pv-gold-400: #d8b64a;
+  --pv-gold-200: #eadca4;
   --pv-gold-100: #f8f1d8;
 
-  --pv-cream: #f7f5ef;
-  --pv-cream-dark: #eeeae0;
+  --pv-cream: #f7f6f1;
+  --pv-cream-2: #eef2ed;
 
   --pv-white: #ffffff;
 
   --pv-text: #17231d;
+  --pv-text-soft: #34443a;
   --pv-muted: #66736b;
 
   --pv-border: #dfe5df;
 }
 
+
 /* =========================================================
-   MAIN ADMIN BACKGROUND
+   ADMIN APP BACKGROUND
    ========================================================= */
 
 .admin-layout {
   min-height: 100vh;
+
   background:
     radial-gradient(
-      circle at top right,
-      rgba(201, 162, 39, 0.08),
+      circle at 90% 0%,
+      rgba(201, 162, 39, 0.10),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 0% 40%,
+      rgba(35, 116, 71, 0.06),
       transparent 28%
     ),
     linear-gradient(
       135deg,
-      #f8f7f2 0%,
-      #f4f5f0 50%,
-      #eef3ed 100%
+      #faf9f5 0%,
+      #f5f6f1 45%,
+      #edf2ed 100%
     );
 
   color: var(--pv-text);
 }
 
+
 /* =========================================================
-   GLOBAL ADMIN SECTIONS
+   REMOVE GENERIC SLATE PAGE BACKGROUNDS
    ========================================================= */
 
 .admin-layout main {
+  min-height: 100vh;
   background: transparent !important;
 }
 
-.admin-layout section {
-  background-color: transparent;
-}
-
-/* =========================================================
-   WHITE CARDS
-   Keep cards clean and professional
-   ========================================================= */
-
-.admin-layout .bg-white {
-  background-color: rgba(255, 255, 255, 0.96) !important;
+.admin-layout .bg-slate-100 {
+  background: transparent !important;
 }
 
 .admin-layout .bg-slate-50 {
-  background-color: #f5f7f3 !important;
+  background: #f5f7f3 !important;
 }
 
-.admin-layout .bg-slate-100 {
-  background-color: transparent !important;
-}
 
 /* =========================================================
-   HEADERS
+   ALL ADMIN HEADERS
    ========================================================= */
 
 .admin-layout header {
+  position: relative;
+
   background:
     linear-gradient(
       135deg,
-      var(--pv-green-950),
-      var(--pv-green-800)
+      var(--pv-green-950) 0%,
+      var(--pv-green-900) 55%,
+      var(--pv-green-800) 100%
     ) !important;
 
-  border-color: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
+
   color: white;
+
+  box-shadow:
+    0 4px 20px rgba(18, 53, 36, 0.14);
 }
+
+
+/* Gold accent line under admin headers */
+
+.admin-layout header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 3px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--pv-gold-500),
+      var(--pv-gold-400),
+      var(--pv-gold-500),
+      transparent
+    );
+
+  opacity: 0.9;
+}
+
+
+/* Header text */
 
 .admin-layout header h1,
 .admin-layout header h2,
 .admin-layout header h3 {
-  color: white !important;
+  color: #ffffff !important;
 }
 
 .admin-layout header p {
@@ -103,15 +137,132 @@
 }
 
 .admin-layout header a {
-  color: rgba(255, 255, 255, 0.78) !important;
+  color: rgba(255, 255, 255, 0.80) !important;
 }
 
 .admin-layout header a:hover {
   color: var(--pv-gold-400) !important;
 }
 
+
 /* =========================================================
-   PRIMARY GREEN BUTTONS
+   ADMIN ICON BOXES
+   ========================================================= */
+
+.admin-layout header .bg-green-100 {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: var(--pv-gold-400) !important;
+
+  border: 1px solid rgba(216, 182, 74, 0.25);
+}
+
+
+/* =========================================================
+   ALL WHITE ADMIN PANELS
+   ========================================================= */
+
+.admin-layout .bg-white {
+  background: rgba(255, 255, 255, 0.97) !important;
+}
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.admin-layout article {
+  background: #ffffff !important;
+
+  border: 1px solid var(--pv-border) !important;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 4px 16px rgba(18, 53, 36, 0.055);
+
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.admin-layout article:hover {
+  transform: translateY(-3px);
+
+  border-color: rgba(35, 116, 71, 0.25) !important;
+
+  box-shadow:
+    0 12px 30px rgba(18, 53, 36, 0.12);
+}
+
+
+/* =========================================================
+   CARD TOP AREAS
+   ========================================================= */
+
+.admin-layout article .from-green-50 {
+  --tw-gradient-from: #eef6f0 var(--tw-gradient-from-position) !important;
+}
+
+.admin-layout article .to-white {
+  --tw-gradient-to: #ffffff var(--tw-gradient-to-position) !important;
+}
+
+
+/* =========================================================
+   ALL STANDARD ADMIN PANELS
+   ========================================================= */
+
+.admin-layout
+  .rounded-2xl.border.border-slate-200.bg-white {
+
+  border-color: var(--pv-border) !important;
+
+  box-shadow:
+    0 4px 16px rgba(18, 53, 36, 0.055);
+}
+
+
+/* =========================================================
+   STAT / SUMMARY CARDS
+   ========================================================= */
+
+.admin-layout
+  .grid
+  > .rounded-2xl.border.border-slate-200.bg-white {
+
+  position: relative;
+  overflow: hidden;
+}
+
+
+/* Gold top accent */
+
+.admin-layout
+  .grid
+  > .rounded-2xl.border.border-slate-200.bg-white::before {
+
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 3px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--pv-green-800),
+      var(--pv-gold-500)
+    );
+}
+
+
+/* =========================================================
+   GREEN BUTTONS
    ========================================================= */
 
 .admin-layout .bg-green-800 {
@@ -122,61 +273,300 @@
   background-color: var(--pv-green-700) !important;
 }
 
+.admin-layout button.bg-green-800 {
+  box-shadow:
+    0 4px 10px rgba(27, 94, 58, 0.18);
+}
+
+.admin-layout button.bg-green-800:hover {
+  box-shadow:
+    0 7px 16px rgba(27, 94, 58, 0.25);
+}
+
+
 /* =========================================================
-   GREEN ICON BACKGROUNDS
+   GREEN ICONS / BADGES
    ========================================================= */
 
 .admin-layout .bg-green-100 {
-  background-color: #e7f1ea !important;
-  color: var(--pv-green-800);
+  background: #e8f2eb !important;
+  color: var(--pv-green-800) !important;
 }
-
-/* =========================================================
-   GOLD ACCENTS
-   ========================================================= */
 
 .admin-layout .text-green-800 {
   color: var(--pv-green-800) !important;
 }
 
-.admin-layout .border-green-200 {
-  border-color: #d5e5d8 !important;
+.admin-layout .text-green-700 {
+  color: var(--pv-green-700) !important;
 }
+
+
+/* =========================================================
+   GOLD ACCENTS
+   ========================================================= */
+
+.admin-layout .bg-blue-100 {
+  background: var(--pv-gold-100) !important;
+}
+
+.admin-layout .text-blue-800 {
+  color: var(--pv-green-900) !important;
+}
+
+
+/* =========================================================
+   FORMS
+   ========================================================= */
+
+.admin-layout input,
+.admin-layout textarea,
+.admin-layout select {
+  background: #ffffff !important;
+
+  color: var(--pv-text) !important;
+
+  border-color: #cfd8d1 !important;
+
+  border-radius: 11px;
+}
+
+.admin-layout input::placeholder,
+.admin-layout textarea::placeholder {
+  color: #9aa59e !important;
+}
+
+.admin-layout input:focus,
+.admin-layout textarea:focus,
+.admin-layout select:focus {
+  border-color: var(--pv-green-700) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(35, 116, 71, 0.12) !important;
+}
+
+
+/* =========================================================
+   FORM SECTION HEADERS
+   ========================================================= */
+
+.admin-layout h3 {
+  color: var(--pv-green-800);
+}
+
+
+/* =========================================================
+   SEARCH PANELS
+   ========================================================= */
+
+.admin-layout input[type="search"] {
+  background: #ffffff !important;
+}
+
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
+.admin-layout table {
+  width: 100%;
+  background: #ffffff;
+}
+
+.admin-layout thead {
+  background:
+    linear-gradient(
+      135deg,
+      var(--pv-green-950),
+      var(--pv-green-800)
+    ) !important;
+
+  color: #ffffff !important;
+}
+
+.admin-layout thead th {
+  color: #ffffff !important;
+}
+
+.admin-layout tbody tr {
+  border-color: var(--pv-border) !important;
+
+  transition: background 150ms ease;
+}
+
+.admin-layout tbody tr:hover {
+  background: #f2f7f3 !important;
+}
+
+
+/* =========================================================
+   GALLERY
+   ========================================================= */
+
+/* Image containers */
+
+.admin-layout img {
+  border-radius: 12px;
+}
+
+
+/* Gallery cards */
+
+.admin-layout
+  .grid
+  > div:has(img) {
+
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+
+/* Gallery image hover */
+
+.admin-layout img {
+  transition:
+    transform 220ms ease,
+    filter 220ms ease;
+}
+
+.admin-layout img:hover {
+  filter: brightness(1.03);
+}
+
+
+/* =========================================================
+   EVENTS
+   ========================================================= */
+
+/* Event/date emphasis */
+
+.admin-layout .text-blue-600,
+.admin-layout .text-blue-700 {
+  color: var(--pv-green-700) !important;
+}
+
+
+/* =========================================================
+   ANNOUNCEMENTS
+   ========================================================= */
+
+/* Announcement cards */
+
+.admin-layout
+  .border-yellow-200 {
+
+  border-color: #eadca4 !important;
+}
+
+.admin-layout
+  .bg-yellow-50 {
+
+  background: #fffaf0 !important;
+}
+
+
+/* =========================================================
+   ADMISSIONS
+   ========================================================= */
+
+.admin-layout
+  .bg-indigo-100,
+.admin-layout
+  .bg-purple-100 {
+
+  background: #e8f2eb !important;
+}
+
+.admin-layout
+  .text-indigo-700,
+.admin-layout
+  .text-purple-700 {
+
+  color: var(--pv-green-800) !important;
+}
+
+
+/* =========================================================
+   ENQUIRIES
+   ========================================================= */
+
+.admin-layout
+  .bg-orange-100 {
+
+  background: #fff5df !important;
+}
+
+.admin-layout
+  .text-orange-700 {
+
+  color: #9a6a00 !important;
+}
+
+
+/* =========================================================
+   STUDENTS
+   ========================================================= */
+
+.admin-layout
+  .bg-blue-50 {
+
+  background: #eef5f0 !important;
+}
+
+
+/* =========================================================
+   MODALS
+   ========================================================= */
+
+.admin-layout .fixed.inset-0 {
+  backdrop-filter: blur(5px);
+}
+
+.admin-layout .bg-slate-950\/60 {
+  background: rgba(10, 25, 17, 0.70) !important;
+}
+
+
+/* Modal */
+
+.admin-layout
+  .fixed
+  .bg-white {
+
+  background: #ffffff !important;
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.22);
+}
+
+
+/* =========================================================
+   STATUS COLORS
+   ========================================================= */
+
+.admin-layout .bg-red-50 {
+  background: #fff4f2 !important;
+}
+
+.admin-layout .text-red-700,
+.admin-layout .text-red-600 {
+  color: #b42318 !important;
+}
+
+.admin-layout .border-red-200 {
+  border-color: #f0c9c3 !important;
+}
+
 
 .admin-layout .bg-green-50 {
-  background-color: #f0f6f1 !important;
+  background: #edf7ef !important;
 }
 
-/* =========================================================
-   CARDS
-   ========================================================= */
-
-.admin-layout article,
-.admin-layout .rounded-2xl {
-  border-color: var(--pv-border);
+.admin-layout .border-green-200 {
+  border-color: #cfe3d3 !important;
 }
 
-.admin-layout article {
-  box-shadow:
-    0 4px 18px rgba(18, 53, 36, 0.06);
-}
-
-.admin-layout article:hover {
-  box-shadow:
-    0 12px 30px rgba(18, 53, 36, 0.11);
-}
-
-/* =========================================================
-   CARD GRADIENTS
-   ========================================================= */
-
-.admin-layout .from-green-50 {
-  --tw-gradient-from: #edf5ef var(--tw-gradient-from-position) !important;
-}
-
-.admin-layout .to-white {
-  --tw-gradient-to: #ffffff var(--tw-gradient-to-position) !important;
-}
 
 /* =========================================================
    TEXT
@@ -186,8 +576,12 @@
   color: var(--pv-text) !important;
 }
 
+.admin-layout .text-slate-800 {
+  color: #24342b !important;
+}
+
 .admin-layout .text-slate-700 {
-  color: #34443a !important;
+  color: var(--pv-text-soft) !important;
 }
 
 .admin-layout .text-slate-600 {
@@ -202,122 +596,66 @@
   color: #7d8981 !important;
 }
 
-/* =========================================================
-   FORM INPUTS
-   ========================================================= */
-
-.admin-layout input,
-.admin-layout textarea,
-.admin-layout select {
-  background-color: #ffffff !important;
-  color: var(--pv-text) !important;
-  border-color: #cfd8d1 !important;
-}
-
-.admin-layout input::placeholder,
-.admin-layout textarea::placeholder {
-  color: #9aa59e !important;
-}
-
-.admin-layout input:focus,
-.admin-layout textarea:focus,
-.admin-layout select:focus {
-  border-color: var(--pv-green-700) !important;
-  box-shadow:
-    0 0 0 3px rgba(35, 116, 71, 0.12) !important;
-}
 
 /* =========================================================
-   FORM SECTION HEADINGS
+   DIVIDERS
    ========================================================= */
 
-.admin-layout h3.text-green-800 {
-  color: var(--pv-green-800) !important;
+.admin-layout .border-slate-200 {
+  border-color: var(--pv-border) !important;
 }
+
+.admin-layout .border-slate-100 {
+  border-color: #e9eee9 !important;
+}
+
 
 /* =========================================================
-   GOLD DETAILS / HIGHLIGHTS
+   DARK ACTION BUTTONS
    ========================================================= */
 
-.admin-layout .text-blue-800 {
-  color: var(--pv-green-800) !important;
-}
-
-.admin-layout .bg-blue-100 {
-  background-color: var(--pv-gold-100) !important;
-  color: var(--pv-green-900) !important;
-}
-
-/* =========================================================
-   SEARCH AREA
-   ========================================================= */
-
-.admin-layout input[type="search"] {
-  background-color: #ffffff !important;
-}
-
-/* =========================================================
-   TABLES
-   ========================================================= */
-
-.admin-layout table {
-  background: #ffffff;
-}
-
-.admin-layout thead {
+.admin-layout .bg-slate-900 {
   background-color: var(--pv-green-950) !important;
-  color: white;
 }
 
-.admin-layout thead th {
-  color: white !important;
+.admin-layout .hover\:bg-slate-700:hover {
+  background-color: var(--pv-green-800) !important;
 }
 
-.admin-layout tbody tr {
-  border-color: var(--pv-border);
-}
-
-.admin-layout tbody tr:hover {
-  background-color: #f3f7f3 !important;
-}
 
 /* =========================================================
-   MODALS
+   CANCEL / SECONDARY BUTTONS
    ========================================================= */
 
-.admin-layout .bg-slate-950\/60 {
-  background-color: rgba(10, 25, 17, 0.68) !important;
+.admin-layout
+  button.border-slate-300 {
+
+  border-color: #cbd5ce !important;
+
+  background: #ffffff !important;
+
+  color: var(--pv-text-soft) !important;
 }
 
-/* Modal itself remains white */
-.admin-layout .fixed .bg-white {
-  background-color: #ffffff !important;
+.admin-layout
+  button.border-slate-300:hover {
+
+  background: #f3f6f3 !important;
+
+  border-color: var(--pv-green-700) !important;
 }
+
 
 /* =========================================================
-   SUCCESS MESSAGE
+   GALLERY / IMAGE OVERLAYS
    ========================================================= */
 
-.admin-layout .bg-green-50 {
-  background-color: #edf7ef !important;
+.admin-layout
+  .group:hover .group-hover\:opacity-100 {
+
+  opacity: 1;
 }
 
-.admin-layout .text-green-800 {
-  color: var(--pv-green-800) !important;
-}
-
-/* =========================================================
-   DANGER
-   ========================================================= */
-
-.admin-layout .bg-red-50 {
-  background-color: #fff4f2 !important;
-}
-
-.admin-layout .text-red-700,
-.admin-layout .text-red-600 {
-  color: #b42318 !important;
-}
 
 /* =========================================================
    SCROLLBAR
@@ -329,7 +667,7 @@
 }
 
 .admin-layout ::-webkit-scrollbar-track {
-  background: #edf0eb;
+  background: #edf1ed;
 }
 
 .admin-layout ::-webkit-scrollbar-thumb {
@@ -341,17 +679,19 @@
   background: var(--pv-green-700);
 }
 
+
 /* =========================================================
    MOBILE
    ========================================================= */
 
 @media (max-width: 640px) {
+
   .admin-layout {
     background:
       linear-gradient(
         180deg,
-        #f7f6f1 0%,
-        #eef3ed 100%
+        #faf9f5 0%,
+        #edf2ed 100%
       );
   }
 
@@ -362,5 +702,9 @@
         var(--pv-green-950),
         var(--pv-green-800)
       ) !important;
+  }
+
+  .admin-layout article {
+    border-radius: 16px;
   }
 }
