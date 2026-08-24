@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 type GalleryItem = {
   id: number
   title: string
-  image_url: string
+  image_url: string | null
   category: string | null
   featured: boolean
   created_at: string
@@ -18,7 +18,9 @@ export default function AdminGalleryPage() {
 
   const [items, setItems] = useState<GalleryItem[]>([])
   const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
+
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
 
@@ -26,6 +28,8 @@ export default function AdminGalleryPage() {
   const [category, setCategory] = useState('School Life')
   const [featured, setFeatured] = useState(false)
   const [file, setFile] = useState<File | null>(null)
+
+  const [editingId, setEditingId] = useState<number | null>(null)
 
   async function loadGallery() {
     setLoading(true)
@@ -49,92 +53,166 @@ export default function AdminGalleryPage() {
     loadGallery()
   }, [])
 
+  function resetForm() {
+    setTitle('')
+    setCategory('School Life')
+    setFeatured(false)
+    setFile(null)
+    setEditingId(null)
+
+    const input = document.getElementById(
+      'gallery-file'
+    ) as HTMLInputElement | null
+
+    if (input) {
+      input.value = ''
+    }
+  }
+
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const selectedFile = event.target.files?.[0] || null
     setFile(selectedFile)
   }
 
-  async function handleUpload(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+  function startEditing(item: GalleryItem) {
+    setEditingId(item.id)
+    setTitle(item.title)
+    setCategory(item.category || 'School Life')
+    setFeatured(item.featured)
+    setFile(null)
+
+    const input = document.getElementById(
+      'gallery-file'
+    ) as HTMLInputElement | null
+
+    if (input) {
+      input.value = ''
+    }
 
     setMessage('')
     setError('')
 
-    if (!file) {
-      setError('Please select an image.')
-      return
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  }
+
+  async function uploadImage(
+    selectedFile: File
+  ): Promise<string> {
+    const fileExtension =
+      selectedFile.name.split('.').pop()?.toLowerCase() || 'jpg'
+
+    const fileName = `${Date.now()}-${Math.random()
+      .toString(36)
+      .substring(2)}.${fileExtension}`
+
+    const filePath = `gallery/${fileName}`
+
+    const { error: uploadError } = await supabase.storage
+      .from('gallery')
+      .upload(filePath, selectedFile, {
+        cacheControl: '3600',
+        upsert: false,
+      })
+
+    if (uploadError) {
+      throw uploadError
     }
+
+    const {
+      data: { publicUrl },
+    } = supabase.storage
+      .from('gallery')
+      .getPublicUrl(filePath)
+
+    return publicUrl
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    setMessage('')
+    setError('')
 
     if (!title.trim()) {
       setError('Please enter a title.')
       return
     }
 
-    setUploading(true)
+    setSaving(true)
 
     try {
-      const fileExtension = file.name.split('.').pop()?.toLowerCase() || 'jpg'
+      let imageUrl: string | null = null
 
-      const fileName = `${Date.now()}-${Math.random()
-        .toString(36)
-        .substring(2)}.${fileExtension}`
-
-      const filePath = `gallery/${fileName}`
-
-      const { error: uploadError } = await supabase.storage
-        .from('gallery')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false,
-        })
-
-      if (uploadError) {
-        throw uploadError
+      if (file) {
+        setUploading(true)
+        imageUrl = await uploadImage(file)
+        setUploading(false)
       }
 
-      const {
-        data: { publicUrl },
-      } = supabase.storage
-        .from('gallery')
-        .getPublicUrl(filePath)
-
-      const { error: databaseError } = await supabase
-        .from('gallery')
-        .insert({
+      if (editingId) {
+        const updateData: {
+          title: string
+          category: string
+          featured: boolean
+          image_url?: string
+        } = {
           title: title.trim(),
-          image_url: publicUrl,
           category,
           featured,
-        })
+        }
 
-      if (databaseError) {
-        await supabase.storage.from('gallery').remove([filePath])
-        throw databaseError
+        if (imageUrl) {
+          updateData.image_url = imageUrl
+        }
+
+        const { error: updateError } = await supabase
+          .from('gallery')
+          .update(updateData)
+          .eq('id', editingId)
+
+        if (updateError) {
+          throw updateError
+        }
+
+        setMessage('Gallery item updated successfully.')
+      } else {
+        if (!imageUrl) {
+          setError('Please select an image when creating a new gallery item.')
+          setSaving(false)
+          return
+        }
+
+        const { error: insertError } = await supabase
+          .from('gallery')
+          .insert({
+            title: title.trim(),
+            image_url: imageUrl,
+            category,
+            featured,
+          })
+
+        if (insertError) {
+          throw insertError
+        }
+
+        setMessage('Gallery image uploaded successfully.')
       }
 
-      setTitle('')
-      setCategory('School Life')
-      setFeatured(false)
-      setFile(null)
-
-      const fileInput = document.getElementById(
-        'gallery-file'
-      ) as HTMLInputElement | null
-
-      if (fileInput) {
-        fileInput.value = ''
-      }
-
-      setMessage('Gallery image uploaded successfully.')
-
+      resetForm()
       await loadGallery()
     } catch (err) {
+      setUploading(false)
+
       setError(
         err instanceof Error
           ? err.message
-          : 'Something went wrong while uploading.'
+          : 'Something went wrong.'
       )
     } finally {
+      setSaving(false)
       setUploading(false)
     }
   }
@@ -150,8 +228,6 @@ export default function AdminGalleryPage() {
     setError('')
 
     try {
-      const imageUrl = item.image_url
-
       const { error: databaseError } = await supabase
         .from('gallery')
         .delete()
@@ -161,19 +237,26 @@ export default function AdminGalleryPage() {
         throw databaseError
       }
 
-      const marker = '/storage/v1/object/public/gallery/'
+      if (item.image_url) {
+        const marker =
+          '/storage/v1/object/public/gallery/'
 
-      if (imageUrl.includes(marker)) {
-        const filePath = decodeURIComponent(
-          imageUrl.split(marker)[1]
-        )
+        if (item.image_url.includes(marker)) {
+          const filePath = decodeURIComponent(
+            item.image_url.split(marker)[1]
+          )
 
-        await supabase.storage
-          .from('gallery')
-          .remove([filePath])
+          await supabase.storage
+            .from('gallery')
+            .remove([filePath])
+        }
       }
 
-      setMessage('Gallery image deleted.')
+      if (editingId === item.id) {
+        resetForm()
+      }
+
+      setMessage('Gallery item deleted.')
 
       await loadGallery()
     } catch (err) {
@@ -189,9 +272,11 @@ export default function AdminGalleryPage() {
     <main className="min-h-screen bg-slate-100">
 
       <header className="border-b bg-white">
+
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
 
           <div>
+
             <Link
               href="/admin"
               className="text-sm font-medium text-slate-500 hover:text-slate-900"
@@ -206,6 +291,7 @@ export default function AdminGalleryPage() {
             <p className="mt-1 text-sm text-slate-500">
               Upload and manage Pleasantville Academy photographs.
             </p>
+
           </div>
 
           <Link
@@ -216,19 +302,45 @@ export default function AdminGalleryPage() {
           </Link>
 
         </div>
+
       </header>
 
       <div className="mx-auto max-w-7xl px-6 py-8">
 
-        {/* Upload */}
         <section className="rounded-2xl bg-white p-6 shadow-sm">
 
-          <h2 className="text-lg font-bold text-slate-900">
-            Add Gallery Image
-          </h2>
+          <div className="flex items-center justify-between">
+
+            <div>
+
+              <h2 className="text-lg font-bold text-slate-900">
+                {editingId
+                  ? 'Edit Gallery Item'
+                  : 'Add Gallery Image'}
+              </h2>
+
+              <p className="mt-1 text-sm text-slate-500">
+                {editingId
+                  ? 'Update this gallery item below.'
+                  : 'Upload a new school photograph.'}
+              </p>
+
+            </div>
+
+            {editingId && (
+              <button
+                type="button"
+                onClick={resetForm}
+                className="text-sm font-medium text-slate-500 hover:text-slate-900"
+              >
+                Cancel Edit
+              </button>
+            )}
+
+          </div>
 
           <form
-            onSubmit={handleUpload}
+            onSubmit={handleSubmit}
             className="mt-6 grid gap-5 lg:grid-cols-2"
           >
 
@@ -238,7 +350,9 @@ export default function AdminGalleryPage() {
                 htmlFor="gallery-file"
                 className="mb-2 block text-sm font-medium text-slate-700"
               >
-                Image
+                {editingId
+                  ? 'Replace Image (optional)'
+                  : 'Image'}
               </label>
 
               <input
@@ -270,7 +384,9 @@ export default function AdminGalleryPage() {
                 id="title"
                 type="text"
                 value={title}
-                onChange={(event) => setTitle(event.target.value)}
+                onChange={(event) =>
+                  setTitle(event.target.value)
+                }
                 placeholder="e.g. Learning Environment"
                 className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm outline-none focus:border-slate-900"
               />
@@ -289,7 +405,9 @@ export default function AdminGalleryPage() {
               <select
                 id="category"
                 value={category}
-                onChange={(event) => setCategory(event.target.value)}
+                onChange={(event) =>
+                  setCategory(event.target.value)
+                }
                 className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none focus:border-slate-900"
               >
                 <option>School Life</option>
@@ -308,7 +426,9 @@ export default function AdminGalleryPage() {
                 id="featured"
                 type="checkbox"
                 checked={featured}
-                onChange={(event) => setFeatured(event.target.checked)}
+                onChange={(event) =>
+                  setFeatured(event.target.checked)
+                }
                 className="h-4 w-4"
               />
 
@@ -321,15 +441,31 @@ export default function AdminGalleryPage() {
 
             </div>
 
-            <div className="lg:col-span-2">
+            <div className="flex gap-3 lg:col-span-2">
 
               <button
                 type="submit"
-                disabled={uploading}
+                disabled={saving}
                 className="rounded-lg bg-slate-900 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {uploading ? 'Uploading...' : 'Upload Image'}
+                {saving
+                  ? uploading
+                    ? 'Uploading...'
+                    : 'Saving...'
+                  : editingId
+                    ? 'Save Changes'
+                    : 'Upload Image'}
               </button>
+
+              {editingId && (
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="rounded-lg border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                >
+                  Cancel
+                </button>
+              )}
 
             </div>
 
@@ -349,17 +485,19 @@ export default function AdminGalleryPage() {
 
         </section>
 
-        {/* Gallery */}
         <section className="mt-8">
 
           <div className="mb-5">
+
             <h2 className="text-lg font-bold text-slate-900">
               Gallery Images
             </h2>
 
             <p className="mt-1 text-sm text-slate-500">
-              {items.length} image{items.length === 1 ? '' : 's'}
+              {items.length} image
+              {items.length === 1 ? '' : 's'}
             </p>
+
           </div>
 
           {loading ? (
@@ -368,7 +506,7 @@ export default function AdminGalleryPage() {
             </div>
           ) : items.length === 0 ? (
             <div className="rounded-2xl bg-white p-10 text-center text-slate-500">
-              No gallery images yet. Upload your first image above.
+              No gallery images yet.
             </div>
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -380,13 +518,35 @@ export default function AdminGalleryPage() {
                   className="overflow-hidden rounded-2xl bg-white shadow-sm"
                 >
 
-                  <div className="relative aspect-[4/3] bg-slate-100">
+                  <div className="relative aspect-[4/3] bg-green-50">
 
-                    <img
-                      src={item.image_url}
-                      alt={item.title}
-                      className="h-full w-full object-cover"
-                    />
+                    {item.image_url ? (
+                      <img
+                        src={item.image_url}
+                        alt={item.title}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center p-6 text-center">
+
+                        <div>
+
+                          <div className="text-4xl">
+                            📷
+                          </div>
+
+                          <p className="mt-3 font-semibold text-green-800">
+                            Photo coming soon
+                          </p>
+
+                          <p className="mt-1 text-sm text-slate-500">
+                            Edit this item to upload a photograph.
+                          </p>
+
+                        </div>
+
+                      </div>
+                    )}
 
                   </div>
 
@@ -395,6 +555,7 @@ export default function AdminGalleryPage() {
                     <div className="flex items-start justify-between gap-3">
 
                       <div>
+
                         <h3 className="font-bold text-slate-900">
                           {item.title}
                         </h3>
@@ -402,6 +563,7 @@ export default function AdminGalleryPage() {
                         <p className="mt-1 text-xs text-slate-500">
                           {item.category}
                         </p>
+
                       </div>
 
                       {item.featured && (
@@ -412,13 +574,25 @@ export default function AdminGalleryPage() {
 
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() => deleteImage(item)}
-                      className="mt-4 w-full rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50"
-                    >
-                      Delete
-                    </button>
+                    <div className="mt-4 flex gap-2">
+
+                      <button
+                        type="button"
+                        onClick={() => startEditing(item)}
+                        className="flex-1 rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700"
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => deleteImage(item)}
+                        className="flex-1 rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50"
+                      >
+                        Delete
+                      </button>
+
+                    </div>
 
                   </div>
 
