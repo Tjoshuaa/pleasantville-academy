@@ -1,343 +1,366 @@
 /* =========================================================
    PLEASANTVILLE ACADEMY
-   ADMIN DASHBOARD GLOBAL THEME
+   ADMIN DASHBOARD GLOBAL DESIGN
    ========================================================= */
 
-/* ---------- ADMIN SHELL ---------- */
+:root {
+  --pv-green-950: #123524;
+  --pv-green-900: #16452d;
+  --pv-green-800: #1b5e3a;
+  --pv-green-700: #237447;
+  --pv-green-600: #2f8555;
 
-.admin-shell {
+  --pv-gold-500: #c9a227;
+  --pv-gold-400: #d8b64a;
+  --pv-gold-100: #f8f1d8;
+
+  --pv-cream: #f7f5ef;
+  --pv-cream-dark: #eeeae0;
+
+  --pv-white: #ffffff;
+
+  --pv-text: #17231d;
+  --pv-muted: #66736b;
+
+  --pv-border: #dfe5df;
+}
+
+/* =========================================================
+   MAIN ADMIN BACKGROUND
+   ========================================================= */
+
+.admin-layout {
   min-height: 100vh;
   background:
     radial-gradient(
-      circle at top left,
-      rgba(22, 101, 52, 0.08),
-      transparent 35%
+      circle at top right,
+      rgba(201, 162, 39, 0.08),
+      transparent 28%
     ),
-    radial-gradient(
-      circle at bottom right,
-      rgba(15, 23, 42, 0.05),
-      transparent 35%
-    ),
-    #f1f5f9;
+    linear-gradient(
+      135deg,
+      #f8f7f2 0%,
+      #f4f5f0 50%,
+      #eef3ed 100%
+    );
 
-  color: #0f172a;
+  color: var(--pv-text);
 }
 
-/* Make the admin area use a professional font rendering */
-.admin-shell,
-.admin-shell * {
-  box-sizing: border-box;
+/* =========================================================
+   GLOBAL ADMIN SECTIONS
+   ========================================================= */
+
+.admin-layout main {
+  background: transparent !important;
 }
 
-/* ---------- GLOBAL PAGE BACKGROUNDS ---------- */
+.admin-layout section {
+  background-color: transparent;
+}
 
-/*
-  Existing admin pages commonly use:
-  bg-slate-100
-  bg-gray-100
-  bg-white
+/* =========================================================
+   WHITE CARDS
+   Keep cards clean and professional
+   ========================================================= */
 
-  These rules make the outer page background consistent.
-*/
+.admin-layout .bg-white {
+  background-color: rgba(255, 255, 255, 0.96) !important;
+}
 
-.admin-shell .bg-slate-100 {
+.admin-layout .bg-slate-50 {
+  background-color: #f5f7f3 !important;
+}
+
+.admin-layout .bg-slate-100 {
   background-color: transparent !important;
 }
 
-.admin-shell .bg-gray-100 {
-  background-color: transparent !important;
-}
+/* =========================================================
+   HEADERS
+   ========================================================= */
 
-/* ---------- ADMIN HEADERS ---------- */
-
-.admin-shell header {
+.admin-layout header {
   background:
     linear-gradient(
       135deg,
-      #ffffff 0%,
-      #f8fafc 100%
+      var(--pv-green-950),
+      var(--pv-green-800)
     ) !important;
 
-  border-color: #e2e8f0 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: white;
 }
 
-/* ---------- MAIN CONTENT ---------- */
-
-.admin-shell section {
-  position: relative;
+.admin-layout header h1,
+.admin-layout header h2,
+.admin-layout header h3 {
+  color: white !important;
 }
 
-/* ---------- CARDS / PANELS ---------- */
+.admin-layout header p {
+  color: rgba(255, 255, 255, 0.72) !important;
+}
 
-/*
-  Existing pages use bg-white heavily.
-  We keep cards white because this gives the
-  dashboard a clean professional contrast.
-*/
+.admin-layout header a {
+  color: rgba(255, 255, 255, 0.78) !important;
+}
 
-.admin-shell .bg-white {
+.admin-layout header a:hover {
+  color: var(--pv-gold-400) !important;
+}
+
+/* =========================================================
+   PRIMARY GREEN BUTTONS
+   ========================================================= */
+
+.admin-layout .bg-green-800 {
+  background-color: var(--pv-green-800) !important;
+}
+
+.admin-layout .hover\:bg-green-700:hover {
+  background-color: var(--pv-green-700) !important;
+}
+
+/* =========================================================
+   GREEN ICON BACKGROUNDS
+   ========================================================= */
+
+.admin-layout .bg-green-100 {
+  background-color: #e7f1ea !important;
+  color: var(--pv-green-800);
+}
+
+/* =========================================================
+   GOLD ACCENTS
+   ========================================================= */
+
+.admin-layout .text-green-800 {
+  color: var(--pv-green-800) !important;
+}
+
+.admin-layout .border-green-200 {
+  border-color: #d5e5d8 !important;
+}
+
+.admin-layout .bg-green-50 {
+  background-color: #f0f6f1 !important;
+}
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.admin-layout article,
+.admin-layout .rounded-2xl {
+  border-color: var(--pv-border);
+}
+
+.admin-layout article {
+  box-shadow:
+    0 4px 18px rgba(18, 53, 36, 0.06);
+}
+
+.admin-layout article:hover {
+  box-shadow:
+    0 12px 30px rgba(18, 53, 36, 0.11);
+}
+
+/* =========================================================
+   CARD GRADIENTS
+   ========================================================= */
+
+.admin-layout .from-green-50 {
+  --tw-gradient-from: #edf5ef var(--tw-gradient-from-position) !important;
+}
+
+.admin-layout .to-white {
+  --tw-gradient-to: #ffffff var(--tw-gradient-to-position) !important;
+}
+
+/* =========================================================
+   TEXT
+   ========================================================= */
+
+.admin-layout .text-slate-900 {
+  color: var(--pv-text) !important;
+}
+
+.admin-layout .text-slate-700 {
+  color: #34443a !important;
+}
+
+.admin-layout .text-slate-600 {
+  color: #526158 !important;
+}
+
+.admin-layout .text-slate-500 {
+  color: var(--pv-muted) !important;
+}
+
+.admin-layout .text-slate-400 {
+  color: #7d8981 !important;
+}
+
+/* =========================================================
+   FORM INPUTS
+   ========================================================= */
+
+.admin-layout input,
+.admin-layout textarea,
+.admin-layout select {
+  background-color: #ffffff !important;
+  color: var(--pv-text) !important;
+  border-color: #cfd8d1 !important;
+}
+
+.admin-layout input::placeholder,
+.admin-layout textarea::placeholder {
+  color: #9aa59e !important;
+}
+
+.admin-layout input:focus,
+.admin-layout textarea:focus,
+.admin-layout select:focus {
+  border-color: var(--pv-green-700) !important;
+  box-shadow:
+    0 0 0 3px rgba(35, 116, 71, 0.12) !important;
+}
+
+/* =========================================================
+   FORM SECTION HEADINGS
+   ========================================================= */
+
+.admin-layout h3.text-green-800 {
+  color: var(--pv-green-800) !important;
+}
+
+/* =========================================================
+   GOLD DETAILS / HIGHLIGHTS
+   ========================================================= */
+
+.admin-layout .text-blue-800 {
+  color: var(--pv-green-800) !important;
+}
+
+.admin-layout .bg-blue-100 {
+  background-color: var(--pv-gold-100) !important;
+  color: var(--pv-green-900) !important;
+}
+
+/* =========================================================
+   SEARCH AREA
+   ========================================================= */
+
+.admin-layout input[type="search"] {
   background-color: #ffffff !important;
 }
 
-/* ---------- CARD BORDERS ---------- */
+/* =========================================================
+   TABLES
+   ========================================================= */
 
-.admin-shell .border-slate-200 {
-  border-color: #dbe3ec !important;
+.admin-layout table {
+  background: #ffffff;
 }
 
-.admin-shell .border-slate-300 {
-  border-color: #cbd5e1 !important;
+.admin-layout thead {
+  background-color: var(--pv-green-950) !important;
+  color: white;
 }
 
-.admin-shell .border-gray-200 {
-  border-color: #dbe3ec !important;
+.admin-layout thead th {
+  color: white !important;
 }
 
-.admin-shell .border-gray-300 {
-  border-color: #cbd5e1 !important;
+.admin-layout tbody tr {
+  border-color: var(--pv-border);
 }
 
-/* ---------- CARD SHADOWS ---------- */
-
-.admin-shell .shadow-sm {
-  box-shadow:
-    0 1px 2px rgba(15, 23, 42, 0.04),
-    0 4px 12px rgba(15, 23, 42, 0.03) !important;
+.admin-layout tbody tr:hover {
+  background-color: #f3f7f3 !important;
 }
 
-.admin-shell .shadow-lg {
-  box-shadow:
-    0 10px 30px rgba(15, 23, 42, 0.08) !important;
+/* =========================================================
+   MODALS
+   ========================================================= */
+
+.admin-layout .bg-slate-950\/60 {
+  background-color: rgba(10, 25, 17, 0.68) !important;
 }
 
-/* ---------- FORM INPUTS ---------- */
-
-.admin-shell input,
-.admin-shell select,
-.admin-shell textarea {
-  color: #0f172a;
-  background-color: #ffffff;
+/* Modal itself remains white */
+.admin-layout .fixed .bg-white {
+  background-color: #ffffff !important;
 }
 
-.admin-shell input::placeholder,
-.admin-shell textarea::placeholder {
-  color: #94a3b8;
+/* =========================================================
+   SUCCESS MESSAGE
+   ========================================================= */
+
+.admin-layout .bg-green-50 {
+  background-color: #edf7ef !important;
 }
 
-/* ---------- FOCUS STATES ---------- */
-
-.admin-shell input:focus,
-.admin-shell select:focus,
-.admin-shell textarea:focus {
-  outline: none;
+.admin-layout .text-green-800 {
+  color: var(--pv-green-800) !important;
 }
 
-/* ---------- BUTTON POLISH ---------- */
+/* =========================================================
+   DANGER
+   ========================================================= */
 
-.admin-shell button {
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
+.admin-layout .bg-red-50 {
+  background-color: #fff4f2 !important;
 }
 
-/* ---------- GREEN BRAND ELEMENTS ---------- */
-
-.admin-shell .bg-green-800 {
-  background-color: #166534 !important;
+.admin-layout .text-red-700,
+.admin-layout .text-red-600 {
+  color: #b42318 !important;
 }
 
-.admin-shell .bg-green-700 {
-  background-color: #15803d !important;
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+.admin-layout ::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
 }
 
-.admin-shell .text-green-800 {
-  color: #166534 !important;
+.admin-layout ::-webkit-scrollbar-track {
+  background: #edf0eb;
 }
 
-.admin-shell .text-green-700 {
-  color: #15803d !important;
-}
-
-.admin-shell .border-green-200 {
-  border-color: #bbf7d0 !important;
-}
-
-.admin-shell .bg-green-50 {
-  background-color: #f0fdf4 !important;
-}
-
-.admin-shell .bg-green-100 {
-  background-color: #dcfce7 !important;
-}
-
-/* ---------- PROFESSIONAL PAGE HEADER ---------- */
-
-.admin-shell header h1 {
-  letter-spacing: -0.025em;
-}
-
-/* ---------- SECTION HEADINGS ---------- */
-
-.admin-shell h1,
-.admin-shell h2,
-.admin-shell h3 {
-  color: #0f172a;
-}
-
-/* ---------- SECONDARY TEXT ---------- */
-
-.admin-shell .text-slate-500 {
-  color: #64748b !important;
-}
-
-.admin-shell .text-slate-400 {
-  color: #94a3b8 !important;
-}
-
-.admin-shell .text-slate-600 {
-  color: #475569 !important;
-}
-
-.admin-shell .text-slate-700 {
-  color: #334155 !important;
-}
-
-/* ---------- DARK ACTION BUTTONS ---------- */
-
-.admin-shell .bg-slate-900 {
-  background-color: #0f172a !important;
-}
-
-.admin-shell .bg-slate-800 {
-  background-color: #1e293b !important;
-}
-
-.admin-shell .text-slate-900 {
-  color: #0f172a !important;
-}
-
-/* ---------- LIGHT SLATE BACKGROUNDS ---------- */
-
-.admin-shell .bg-slate-50 {
-  background-color: #f8fafc !important;
-}
-
-.admin-shell .bg-slate-200 {
-  background-color: #e2e8f0 !important;
-}
-
-/* ---------- GRADIENT CARD HEADERS ---------- */
-
-.admin-shell .from-green-50 {
-  --tw-gradient-from: #f0fdf4 !important;
-}
-
-.admin-shell .to-white {
-  --tw-gradient-to: #ffffff !important;
-}
-
-/* ---------- SUCCESS MESSAGE ---------- */
-
-.admin-shell .bg-green-50 {
-  background-color: #f0fdf4 !important;
-}
-
-.admin-shell .text-green-800 {
-  color: #166534 !important;
-}
-
-/* ---------- ERROR MESSAGE ---------- */
-
-.admin-shell .bg-red-50 {
-  background-color: #fef2f2 !important;
-}
-
-.admin-shell .text-red-700 {
-  color: #b91c1c !important;
-}
-
-.admin-shell .text-red-600 {
-  color: #dc2626 !important;
-}
-
-.admin-shell .border-red-200 {
-  border-color: #fecaca !important;
-}
-
-/* ---------- BLUE ACCENTS ---------- */
-
-.admin-shell .bg-blue-100 {
-  background-color: #dbeafe !important;
-}
-
-/* ---------- MODALS ---------- */
-
-.admin-shell .fixed.inset-0 {
-  isolation: isolate;
-}
-
-.admin-shell .backdrop-blur-sm {
-  backdrop-filter: blur(6px);
-}
-
-/* ---------- TABLES ---------- */
-
-.admin-shell table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-}
-
-.admin-shell th {
-  color: #475569;
-  background-color: #f8fafc;
-  font-weight: 700;
-}
-
-.admin-shell td {
-  color: #334155;
-}
-
-/* ---------- LINKS ---------- */
-
-.admin-shell a {
-  transition:
-    color 0.2s ease,
-    opacity 0.2s ease;
-}
-
-/* ---------- SCROLLBAR ---------- */
-
-.admin-shell ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-.admin-shell ::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-
-.admin-shell ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+.admin-layout ::-webkit-scrollbar-thumb {
+  background: #aebbb1;
   border-radius: 999px;
 }
 
-.admin-shell ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+.admin-layout ::-webkit-scrollbar-thumb:hover {
+  background: var(--pv-green-700);
 }
 
-/* ---------- MOBILE ---------- */
+/* =========================================================
+   MOBILE
+   ========================================================= */
 
 @media (max-width: 640px) {
-  .admin-shell {
-    background: #f1f5f9;
+  .admin-layout {
+    background:
+      linear-gradient(
+        180deg,
+        #f7f6f1 0%,
+        #eef3ed 100%
+      );
   }
 
-  .admin-shell header {
-    background: #ffffff !important;
+  .admin-layout header {
+    background:
+      linear-gradient(
+        145deg,
+        var(--pv-green-950),
+        var(--pv-green-800)
+      ) !important;
   }
 }
-/* Admin dashboard global styles */
