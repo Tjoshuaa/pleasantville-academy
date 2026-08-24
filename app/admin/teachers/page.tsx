@@ -1,6 +1,6 @@
 'use client'
 
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 
@@ -14,8 +14,9 @@ type Teacher = {
   phone: string | null
   email: string | null
   address: string | null
-  bio: string | null
-  photo_url: string | null
+  employment_type: string | null
+  date_joined: string | null
+  notes: string | null
 }
 
 export default function TeachersAdminPage() {
@@ -27,7 +28,6 @@ export default function TeachersAdminPage() {
 
   const [search, setSearch] = useState('')
   const [showForm, setShowForm] = useState(false)
-
   const [editingId, setEditingId] = useState<number | null>(null)
   const [selectedTeacher, setSelectedTeacher] =
     useState<Teacher | null>(null)
@@ -39,8 +39,9 @@ export default function TeachersAdminPage() {
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [address, setAddress] = useState('')
-  const [bio, setBio] = useState('')
-  const [photoUrl, setPhotoUrl] = useState('')
+  const [employmentType, setEmploymentType] = useState('')
+  const [dateJoined, setDateJoined] = useState('')
+  const [notes, setNotes] = useState('')
 
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
@@ -55,10 +56,11 @@ export default function TeachersAdminPage() {
       .order('created_at', { ascending: false })
 
     if (error) {
+      console.error('Teachers error:', error)
       setError(error.message)
       setTeachers([])
     } else {
-      setTeachers(data || [])
+      setTeachers((data || []) as Teacher[])
     }
 
     setLoading(false)
@@ -77,8 +79,9 @@ export default function TeachersAdminPage() {
     setPhone('')
     setEmail('')
     setAddress('')
-    setBio('')
-    setPhotoUrl('')
+    setEmploymentType('')
+    setDateJoined('')
+    setNotes('')
     setShowForm(false)
   }
 
@@ -106,8 +109,9 @@ export default function TeachersAdminPage() {
     setPhone(teacher.phone || '')
     setEmail(teacher.email || '')
     setAddress(teacher.address || '')
-    setBio(teacher.bio || '')
-    setPhotoUrl(teacher.photo_url || '')
+    setEmploymentType(teacher.employment_type || '')
+    setDateJoined(teacher.date_joined || '')
+    setNotes(teacher.notes || '')
 
     setSelectedTeacher(null)
     setShowForm(true)
@@ -142,8 +146,9 @@ export default function TeachersAdminPage() {
         phone: phone.trim() || null,
         email: email.trim() || null,
         address: address.trim() || null,
-        bio: bio.trim() || null,
-        photo_url: photoUrl.trim() || null,
+        employment_type: employmentType || null,
+        date_joined: dateJoined || null,
+        notes: notes.trim() || null,
       }
 
       if (editingId !== null) {
@@ -155,7 +160,7 @@ export default function TeachersAdminPage() {
         if (error) throw error
 
         setMessage(
-          'Teacher or staff member updated successfully.'
+          'Teacher / staff record updated successfully.'
         )
       } else {
         const { error } = await supabase
@@ -165,17 +170,19 @@ export default function TeachersAdminPage() {
         if (error) throw error
 
         setMessage(
-          'Teacher or staff member added successfully.'
+          'Teacher / staff member added successfully.'
         )
       }
 
       resetForm()
       await loadTeachers()
     } catch (err) {
+      console.error(err)
+
       setError(
         err instanceof Error
           ? err.message
-          : 'Something went wrong while saving.'
+          : 'Something went wrong while saving the record.'
       )
     } finally {
       setSaving(false)
@@ -209,44 +216,68 @@ export default function TeachersAdminPage() {
       }
 
       setMessage(
-        'Teacher or staff member deleted successfully.'
+        'Teacher / staff record deleted successfully.'
       )
 
       await loadTeachers()
     } catch (err) {
+      console.error(err)
+
       setError(
         err instanceof Error
           ? err.message
-          : 'Could not delete this teacher.'
+          : 'Could not delete the record.'
       )
     }
   }
 
-  const filteredTeachers = teachers.filter((teacher) => {
+  const filteredTeachers = useMemo(() => {
     const searchText = search.toLowerCase().trim()
 
-    if (!searchText) return true
+    if (!searchText) return teachers
 
-    return [
-      teacher.full_name,
-      teacher.role,
-      teacher.subject,
-      teacher.qualification,
-      teacher.phone,
-      teacher.email,
-    ]
-      .filter(Boolean)
-      .some((value) =>
-        String(value).toLowerCase().includes(searchText)
-      )
-  })
+    return teachers.filter((teacher) => {
+      return [
+        teacher.full_name,
+        teacher.role,
+        teacher.subject,
+        teacher.qualification,
+        teacher.phone,
+        teacher.email,
+        teacher.employment_type,
+      ]
+        .filter(Boolean)
+        .some((value) =>
+          String(value)
+            .toLowerCase()
+            .includes(searchText)
+        )
+    })
+  }, [teachers, search])
+
+  function formatDate(date: string | null) {
+    if (!date) return 'Not provided'
+
+    const parsed = new Date(date)
+
+    if (Number.isNaN(parsed.getTime())) {
+      return date
+    }
+
+    return parsed.toLocaleDateString('en-NG', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    })
+  }
 
   return (
-    <main className="min-h-screen bg-slate-100">
+    <main className="min-h-screen bg-slate-100 text-slate-900">
 
       {/* HEADER */}
 
       <header className="border-b border-slate-200 bg-white">
+
         <div className="mx-auto max-w-7xl px-6 py-6">
 
           <Link
@@ -259,27 +290,33 @@ export default function TeachersAdminPage() {
           <div className="mt-5 flex flex-col justify-between gap-5 md:flex-row md:items-center">
 
             <div>
+
               <div className="flex items-center gap-3">
+
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-100 text-2xl">
                   👩‍🏫
                 </div>
 
                 <div>
+
                   <h1 className="text-3xl font-bold tracking-tight text-slate-900">
                     Teachers & Staff
                   </h1>
 
                   <p className="mt-1 text-sm text-slate-500">
-                    Manage your school's teaching and support staff.
+                    Manage teachers and school staff records.
                   </p>
+
                 </div>
+
               </div>
+
             </div>
 
             <button
               type="button"
               onClick={startAddTeacher}
-              className="rounded-xl bg-green-800 px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-green-700 hover:shadow-md"
+              className="inline-flex items-center justify-center rounded-xl bg-green-800 px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-green-700 hover:shadow-md"
             >
               + Add Teacher / Staff
             </button>
@@ -287,6 +324,7 @@ export default function TeachersAdminPage() {
           </div>
 
         </div>
+
       </header>
 
       <section className="mx-auto max-w-7xl px-6 py-8">
@@ -294,57 +332,93 @@ export default function TeachersAdminPage() {
         {/* MESSAGES */}
 
         {message && (
-          <div className="mb-6 rounded-xl border border-green-200 bg-green-50 px-5 py-4 text-sm font-semibold text-green-700">
-            ✓ {message}
+          <div className="mb-6 flex items-center gap-3 rounded-xl border border-green-200 bg-green-50 px-5 py-4 text-sm font-semibold text-green-800">
+            <span className="text-lg">✓</span>
+            {message}
           </div>
         )}
 
         {error && (
-          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-semibold text-red-700">
-            {error}
+          <div className="mb-6 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-semibold text-red-700">
+            <span className="text-lg">!</span>
+            <span>{error}</span>
           </div>
         )}
 
         {/* SUMMARY */}
 
-        <div className="mb-6 grid gap-4 sm:grid-cols-3">
+        <div className="mb-8 grid gap-4 sm:grid-cols-3">
 
           <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <p className="text-sm font-medium text-slate-500">
-              Total Staff
-            </p>
 
-            <p className="mt-2 text-3xl font-bold text-slate-900">
-              {loading ? '...' : teachers.length}
-            </p>
+            <div className="flex items-center justify-between">
+
+              <div>
+                <p className="text-sm font-medium text-slate-500">
+                  Total Staff
+                </p>
+
+                <p className="mt-2 text-3xl font-bold text-slate-900">
+                  {teachers.length}
+                </p>
+              </div>
+
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-green-100 text-xl">
+                👥
+              </div>
+
+            </div>
+
           </div>
 
           <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <p className="text-sm font-medium text-slate-500">
-              Teaching Staff
-            </p>
 
-            <p className="mt-2 text-3xl font-bold text-green-800">
-              {loading
-                ? '...'
-                : teachers.filter((teacher) =>
-                    teacher.role
-                      ?.toLowerCase()
-                      .includes('teacher')
-                  ).length}
-            </p>
+            <div className="flex items-center justify-between">
+
+              <div>
+                <p className="text-sm font-medium text-slate-500">
+                  Teachers
+                </p>
+
+                <p className="mt-2 text-3xl font-bold text-slate-900">
+                  {
+                    teachers.filter((teacher) =>
+                      (teacher.role || '')
+                        .toLowerCase()
+                        .includes('teacher')
+                    ).length
+                  }
+                </p>
+              </div>
+
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-100 text-xl">
+                🎓
+              </div>
+
+            </div>
+
           </div>
 
           <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <p className="text-sm font-medium text-slate-500">
-              Showing
-            </p>
 
-            <p className="mt-2 text-3xl font-bold text-slate-900">
-              {loading
-                ? '...'
-                : filteredTeachers.length}
-            </p>
+            <div className="flex items-center justify-between">
+
+              <div>
+                <p className="text-sm font-medium text-slate-500">
+                  Showing
+                </p>
+
+                <p className="mt-2 text-3xl font-bold text-slate-900">
+                  {filteredTeachers.length}
+                </p>
+              </div>
+
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100 text-xl">
+                🔎
+              </div>
+
+            </div>
+
           </div>
 
         </div>
@@ -359,25 +433,27 @@ export default function TeachersAdminPage() {
               <div className="flex items-center justify-between gap-4">
 
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-green-700">
+
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-800">
                     Staff Management
                   </p>
 
                   <h2 className="mt-1 text-xl font-bold text-slate-900">
                     {editingId !== null
-                      ? 'Edit Staff Member'
-                      : 'Add New Staff Member'}
+                      ? 'Edit Teacher / Staff'
+                      : 'Add Teacher / Staff'}
                   </h2>
 
                   <p className="mt-1 text-sm text-slate-500">
-                    Enter the staff member's professional information.
+                    Enter the staff member's information below.
                   </p>
+
                 </div>
 
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-500 hover:bg-white hover:text-slate-900"
+                  className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-500 transition hover:bg-slate-200 hover:text-slate-900"
                 >
                   Cancel
                 </button>
@@ -388,18 +464,21 @@ export default function TeachersAdminPage() {
 
             <form
               onSubmit={handleSubmit}
-              className="grid gap-6 p-6 md:grid-cols-2"
+              className="grid gap-5 p-6 md:grid-cols-2"
             >
 
-              {/* PERSONAL */}
+              {/* STAFF INFORMATION */}
 
               <div className="md:col-span-2">
+
                 <h3 className="border-b border-slate-200 pb-2 text-sm font-bold uppercase tracking-wider text-green-800">
-                  Personal & Professional Information
+                  Staff Information
                 </h3>
+
               </div>
 
               <div>
+
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
                   Full Name *
                 </label>
@@ -414,9 +493,11 @@ export default function TeachersAdminPage() {
                   required
                   className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
                 />
+
               </div>
 
               <div>
+
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
                   Role / Position
                 </label>
@@ -430,11 +511,13 @@ export default function TeachersAdminPage() {
                   placeholder="e.g. Mathematics Teacher"
                   className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
                 />
+
               </div>
 
               <div>
+
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Subject
+                  Subject / Department
                 </label>
 
                 <input
@@ -446,9 +529,11 @@ export default function TeachersAdminPage() {
                   placeholder="e.g. Mathematics"
                   className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
                 />
+
               </div>
 
               <div>
+
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
                   Qualification
                 </label>
@@ -462,17 +547,76 @@ export default function TeachersAdminPage() {
                   placeholder="e.g. B.Ed, M.Ed"
                   className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
                 />
+
+              </div>
+
+              <div>
+
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Employment Type
+                </label>
+
+                <select
+                  value={employmentType}
+                  onChange={(event) =>
+                    setEmploymentType(event.target.value)
+                  }
+                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                >
+
+                  <option value="">
+                    Select employment type
+                  </option>
+
+                  <option value="Full-time">
+                    Full-time
+                  </option>
+
+                  <option value="Part-time">
+                    Part-time
+                  </option>
+
+                  <option value="Contract">
+                    Contract
+                  </option>
+
+                  <option value="Temporary">
+                    Temporary
+                  </option>
+
+                </select>
+
+              </div>
+
+              <div>
+
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Date Joined
+                </label>
+
+                <input
+                  type="date"
+                  value={dateJoined}
+                  onChange={(event) =>
+                    setDateJoined(event.target.value)
+                  }
+                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                />
+
               </div>
 
               {/* CONTACT */}
 
-              <div className="mt-2 md:col-span-2">
+              <div className="mt-3 md:col-span-2">
+
                 <h3 className="border-b border-slate-200 pb-2 text-sm font-bold uppercase tracking-wider text-green-800">
                   Contact Information
                 </h3>
+
               </div>
 
               <div>
+
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
                   Phone
                 </label>
@@ -486,9 +630,11 @@ export default function TeachersAdminPage() {
                   placeholder="Phone number"
                   className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
                 />
+
               </div>
 
               <div>
+
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
                   Email
                 </label>
@@ -502,9 +648,11 @@ export default function TeachersAdminPage() {
                   placeholder="Email address"
                   className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
                 />
+
               </div>
 
               <div className="md:col-span-2">
+
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
                   Address
                 </label>
@@ -518,51 +666,27 @@ export default function TeachersAdminPage() {
                   placeholder="Home address"
                   className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
                 />
+
               </div>
 
-              {/* PROFILE */}
-
-              <div className="mt-2 md:col-span-2">
-                <h3 className="border-b border-slate-200 pb-2 text-sm font-bold uppercase tracking-wider text-green-800">
-                  Profile
-                </h3>
-              </div>
+              {/* NOTES */}
 
               <div className="md:col-span-2">
+
                 <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Photo URL
-                </label>
-
-                <input
-                  type="url"
-                  value={photoUrl}
-                  onChange={(event) =>
-                    setPhotoUrl(event.target.value)
-                  }
-                  placeholder="https://..."
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
-                />
-
-                <p className="mt-2 text-xs text-slate-400">
-                  You can add image upload/storage later. For now,
-                  enter the public image URL.
-                </p>
-              </div>
-
-              <div className="md:col-span-2">
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Biography
+                  Notes
                 </label>
 
                 <textarea
-                  value={bio}
+                  value={notes}
                   onChange={(event) =>
-                    setBio(event.target.value)
+                    setNotes(event.target.value)
                   }
-                  placeholder="Short professional biography..."
-                  rows={5}
+                  placeholder="Additional information..."
+                  rows={4}
                   className="w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
                 />
+
               </div>
 
               {/* ACTIONS */}
@@ -572,13 +696,13 @@ export default function TeachersAdminPage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="rounded-xl bg-green-800 px-6 py-3 font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="rounded-xl bg-green-800 px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {saving
                     ? 'Saving...'
                     : editingId !== null
                       ? 'Save Changes'
-                      : 'Add Staff Member'}
+                      : 'Add Teacher / Staff'}
                 </button>
 
                 <button
@@ -600,73 +724,95 @@ export default function TeachersAdminPage() {
 
         <div className="mb-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
 
-          <label className="mb-2 block text-sm font-semibold text-slate-700">
-            Search Teachers & Staff
-          </label>
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
 
-          <input
-            type="search"
-            value={search}
-            onChange={(event) =>
-              setSearch(event.target.value)
-            }
-            placeholder="Search by name, role, subject, qualification, phone or email..."
-            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
-          />
+            <div className="flex-1">
 
-          <div className="mt-3 flex items-center justify-between">
-            <p className="text-sm text-slate-500">
+              <label className="mb-2 block text-sm font-semibold text-slate-700">
+                Search Teachers & Staff
+              </label>
+
+              <div className="relative">
+
+                <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                  🔎
+                </span>
+
+                <input
+                  type="search"
+                  value={search}
+                  onChange={(event) =>
+                    setSearch(event.target.value)
+                  }
+                  placeholder="Search by name, role, subject, phone or email..."
+                  className="w-full rounded-xl border border-slate-300 bg-white py-3 pl-11 pr-4 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                />
+
+              </div>
+
+            </div>
+
+            <div className="text-sm text-slate-500">
               Showing{' '}
-              <span className="font-semibold text-slate-900">
+              <span className="font-bold text-slate-900">
                 {filteredTeachers.length}
               </span>{' '}
               of{' '}
-              <span className="font-semibold text-slate-900">
+              <span className="font-bold text-slate-900">
                 {teachers.length}
               </span>{' '}
-              staff members
-            </p>
+              records
+            </div>
+
           </div>
 
         </div>
 
-        {/* LIST */}
+        {/* STAFF LIST */}
 
         {loading ? (
 
           <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm">
-            <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-green-700" />
+
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-xl">
+              👩‍🏫
+            </div>
 
             <p className="mt-4 font-semibold text-slate-700">
-              Loading teachers & staff...
+              Loading teachers and staff...
             </p>
+
+            <p className="mt-1 text-sm text-slate-500">
+              Please wait a moment.
+            </p>
+
           </div>
 
         ) : filteredTeachers.length === 0 ? (
 
           <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm">
 
-            <div className="text-5xl">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-green-100 text-3xl">
               👩‍🏫
             </div>
 
-            <h2 className="mt-4 text-xl font-bold text-slate-900">
+            <h2 className="mt-5 text-xl font-bold text-slate-900">
               {teachers.length === 0
-                ? 'No staff members yet'
-                : 'No staff members found'}
+                ? 'No teachers or staff yet'
+                : 'No records found'}
             </h2>
 
-            <p className="mt-2 text-slate-500">
+            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
               {teachers.length === 0
-                ? 'Add your first teacher or staff member to get started.'
-                : 'Try changing your search.'}
+                ? 'Add your first teacher or staff member to begin managing your school team.'
+                : 'Try using a different name, role, subject or contact detail.'}
             </p>
 
             {teachers.length === 0 && (
               <button
                 type="button"
                 onClick={startAddTeacher}
-                className="mt-5 rounded-xl bg-green-800 px-5 py-3 font-semibold text-white transition hover:bg-green-700"
+                className="mt-6 rounded-xl bg-green-800 px-5 py-3 font-semibold text-white transition hover:bg-green-700"
               >
                 + Add Teacher / Staff
               </button>
@@ -682,38 +828,26 @@ export default function TeachersAdminPage() {
 
               <article
                 key={teacher.id}
-                className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg"
               >
 
                 {/* CARD TOP */}
 
-                <div className="border-b border-slate-100 bg-gradient-to-br from-green-50 to-slate-50 p-6">
+                <div className="border-b border-slate-100 bg-gradient-to-br from-green-50 to-white p-6">
 
                   <div className="flex items-start gap-4">
 
-                    {teacher.photo_url ? (
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-green-800 text-2xl text-white shadow-sm">
+                      👩‍🏫
+                    </div>
 
-                      <img
-                        src={teacher.photo_url}
-                        alt={teacher.full_name}
-                        className="h-16 w-16 shrink-0 rounded-2xl object-cover shadow-sm"
-                      />
-
-                    ) : (
-
-                      <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-green-800 text-3xl text-white shadow-sm">
-                        👩‍🏫
-                      </div>
-
-                    )}
-
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1">
 
                       <h2 className="truncate text-lg font-bold text-slate-900">
                         {teacher.full_name}
                       </h2>
 
-                      <p className="mt-1 text-sm font-semibold text-green-700">
+                      <p className="mt-1 text-sm font-semibold text-green-800">
                         {teacher.role || 'Staff Member'}
                       </p>
 
@@ -723,13 +857,14 @@ export default function TeachersAdminPage() {
 
                 </div>
 
-                {/* CARD BODY */}
+                {/* CARD CONTENT */}
 
                 <div className="p-6">
 
                   <div className="space-y-3 text-sm">
 
-                    <div className="flex justify-between gap-4">
+                    <div className="flex items-start justify-between gap-4">
+
                       <span className="text-slate-500">
                         Subject
                       </span>
@@ -737,30 +872,32 @@ export default function TeachersAdminPage() {
                       <span className="text-right font-semibold text-slate-900">
                         {teacher.subject || 'Not provided'}
                       </span>
+
                     </div>
 
-                    <div className="flex justify-between gap-4">
+                    <div className="flex items-start justify-between gap-4">
+
                       <span className="text-slate-500">
                         Qualification
                       </span>
 
                       <span className="max-w-[60%] text-right font-semibold text-slate-900">
-                        {teacher.qualification ||
-                          'Not provided'}
+                        {teacher.qualification || 'Not provided'}
                       </span>
+
                     </div>
 
-                    {teacher.phone && (
-                      <div className="flex justify-between gap-4">
-                        <span className="text-slate-500">
-                          Phone
-                        </span>
+                    <div className="flex items-start justify-between gap-4">
 
-                        <span className="text-right font-medium text-slate-900">
-                          {teacher.phone}
-                        </span>
-                      </div>
-                    )}
+                      <span className="text-slate-500">
+                        Employment
+                      </span>
+
+                      <span className="text-right font-semibold text-slate-900">
+                        {teacher.employment_type || 'Not provided'}
+                      </span>
+
+                    </div>
 
                   </div>
 
@@ -773,7 +910,7 @@ export default function TeachersAdminPage() {
                       onClick={() =>
                         setSelectedTeacher(teacher)
                       }
-                      className="rounded-lg border border-slate-200 px-2 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                      className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
                     >
                       Details
                     </button>
@@ -783,7 +920,7 @@ export default function TeachersAdminPage() {
                       onClick={() =>
                         startEditTeacher(teacher)
                       }
-                      className="rounded-lg bg-slate-900 px-2 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
+                      className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
                     >
                       Edit
                     </button>
@@ -793,7 +930,7 @@ export default function TeachersAdminPage() {
                       onClick={() =>
                         deleteTeacher(teacher)
                       }
-                      className="rounded-lg border border-red-200 px-2 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                      className="rounded-lg border border-red-200 px-3 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50"
                     >
                       Delete
                     </button>
@@ -816,35 +953,31 @@ export default function TeachersAdminPage() {
 
       {selectedTeacher && (
 
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm"
+          onClick={() => setSelectedTeacher(null)}
+        >
 
-          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl">
+          <div
+            className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-2xl"
+            onClick={(event) =>
+              event.stopPropagation()
+            }
+          >
 
             {/* MODAL HEADER */}
 
-            <div className="flex items-start justify-between border-b border-slate-200 bg-slate-50 p-6">
+            <div className="flex items-start justify-between border-b border-slate-200 bg-gradient-to-br from-green-50 to-white p-6">
 
               <div className="flex items-center gap-4">
 
-                {selectedTeacher.photo_url ? (
-
-                  <img
-                    src={selectedTeacher.photo_url}
-                    alt={selectedTeacher.full_name}
-                    className="h-16 w-16 rounded-2xl object-cover"
-                  />
-
-                ) : (
-
-                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-green-800 text-3xl text-white">
-                    👩‍🏫
-                  </div>
-
-                )}
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-green-800 text-2xl text-white">
+                  👩‍🏫
+                </div>
 
                 <div>
 
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-green-700">
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-800">
                     Staff Profile
                   </p>
 
@@ -866,18 +999,19 @@ export default function TeachersAdminPage() {
                 onClick={() =>
                   setSelectedTeacher(null)
                 }
-                className="rounded-lg px-3 py-2 text-xl text-slate-500 transition hover:bg-white hover:text-slate-900"
+                className="rounded-lg px-3 py-2 text-xl text-slate-400 transition hover:bg-slate-100 hover:text-slate-900"
               >
                 ×
               </button>
 
             </div>
 
-            {/* DETAILS */}
+            {/* MODAL CONTENT */}
 
             <div className="grid gap-6 p-6 md:grid-cols-2">
 
               <div>
+
                 <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
                   Role / Position
                 </p>
@@ -886,20 +1020,24 @@ export default function TeachersAdminPage() {
                   {selectedTeacher.role ||
                     'Not provided'}
                 </p>
+
               </div>
 
               <div>
+
                 <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  Subject
+                  Subject / Department
                 </p>
 
                 <p className="mt-1 font-semibold text-slate-900">
                   {selectedTeacher.subject ||
                     'Not provided'}
                 </p>
+
               </div>
 
               <div>
+
                 <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
                   Qualification
                 </p>
@@ -908,9 +1046,38 @@ export default function TeachersAdminPage() {
                   {selectedTeacher.qualification ||
                     'Not provided'}
                 </p>
+
               </div>
 
               <div>
+
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                  Employment Type
+                </p>
+
+                <p className="mt-1 font-semibold text-slate-900">
+                  {selectedTeacher.employment_type ||
+                    'Not provided'}
+                </p>
+
+              </div>
+
+              <div>
+
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                  Date Joined
+                </p>
+
+                <p className="mt-1 font-semibold text-slate-900">
+                  {formatDate(
+                    selectedTeacher.date_joined
+                  )}
+                </p>
+
+              </div>
+
+              <div>
+
                 <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
                   Phone
                 </p>
@@ -919,9 +1086,19 @@ export default function TeachersAdminPage() {
                   {selectedTeacher.phone ||
                     'Not provided'}
                 </p>
+
               </div>
 
               <div className="md:col-span-2">
+
+                <h3 className="border-b border-slate-200 pb-2 text-sm font-bold uppercase tracking-wider text-green-800">
+                  Contact Information
+                </h3>
+
+              </div>
+
+              <div className="md:col-span-2">
+
                 <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
                   Email
                 </p>
@@ -930,37 +1107,40 @@ export default function TeachersAdminPage() {
                   {selectedTeacher.email ||
                     'Not provided'}
                 </p>
+
               </div>
 
               <div className="md:col-span-2">
+
                 <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
                   Address
                 </p>
 
-                <p className="mt-1 font-medium text-slate-700">
+                <p className="mt-1 font-semibold text-slate-900">
                   {selectedTeacher.address ||
                     'Not provided'}
                 </p>
+
               </div>
 
               <div className="md:col-span-2">
 
-                <p className="border-b border-slate-200 pb-2 text-sm font-bold uppercase tracking-wider text-green-800">
-                  Biography
-                </p>
+                <h3 className="border-b border-slate-200 pb-2 text-sm font-bold uppercase tracking-wider text-green-800">
+                  Notes
+                </h3>
 
-                <p className="mt-3 whitespace-pre-wrap leading-7 text-slate-700">
-                  {selectedTeacher.bio ||
-                    'No biography has been added.'}
+                <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-slate-700">
+                  {selectedTeacher.notes ||
+                    'No additional notes.'}
                 </p>
 
               </div>
 
             </div>
 
-            {/* MODAL FOOTER */}
+            {/* MODAL ACTIONS */}
 
-            <div className="flex justify-end gap-3 border-t border-slate-200 bg-slate-50 p-5">
+            <div className="flex flex-wrap justify-end gap-3 border-t border-slate-200 bg-slate-50 p-5">
 
               <button
                 type="button"
