@@ -4,6 +4,7 @@ import About from "@/components/About";
 import Programs from "@/components/Programs";
 import Facilities from "@/components/Facilities";
 import Gallery from "@/components/Gallery";
+import Events from '@/components/events'
 import Announcements from '@/components/announcements'
 import Admissions from "@/components/Admissions";
 import Contact from "@/components/Contact";
@@ -33,6 +34,8 @@ export default function Home() {
       <Facilities />
 
       <Gallery />
+      
+      <Events />
 
       <Announcements />
 
