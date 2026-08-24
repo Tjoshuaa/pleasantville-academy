@@ -1,6 +1,6 @@
 'use client'
 
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 
@@ -28,7 +28,6 @@ export default function StudentsAdminPage() {
 
   const [search, setSearch] = useState('')
   const [showForm, setShowForm] = useState(false)
-
   const [editingId, setEditingId] = useState<number | null>(null)
   const [selectedStudent, setSelectedStudent] =
     useState<Student | null>(null)
@@ -92,6 +91,11 @@ export default function StudentsAdminPage() {
     setError('')
     resetForm()
     setShowForm(true)
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
   }
 
   function startEditStudent(student: Student) {
@@ -119,7 +123,9 @@ export default function StudentsAdminPage() {
     })
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault()
 
     setMessage('')
@@ -146,7 +152,7 @@ export default function StudentsAdminPage() {
         notes: notes.trim() || null,
       }
 
-      if (editingId) {
+      if (editingId !== null) {
         const { error } = await supabase
           .from('students')
           .update(studentData)
@@ -215,25 +221,27 @@ export default function StudentsAdminPage() {
     }
   }
 
-  const filteredStudents = students.filter((student) => {
+  const filteredStudents = useMemo(() => {
     const searchText = search.toLowerCase().trim()
 
-    if (!searchText) return true
+    if (!searchText) return students
 
-    return [
-      student.full_name,
-      student.student_id,
-      student.class_name,
-      student.gender,
-      student.parent_name,
-      student.parent_phone,
-      student.parent_email,
-    ]
-      .filter(Boolean)
-      .some((value) =>
-        String(value).toLowerCase().includes(searchText)
-      )
-  })
+    return students.filter((student) =>
+      [
+        student.full_name,
+        student.student_id,
+        student.class_name,
+        student.gender,
+        student.parent_name,
+        student.parent_phone,
+        student.parent_email,
+      ]
+        .filter(Boolean)
+        .some((value) =>
+          String(value).toLowerCase().includes(searchText)
+        )
+    )
+  }, [students, search])
 
   function formatDate(date: string | null) {
     if (!date) return 'Not provided'
@@ -252,108 +260,273 @@ export default function StudentsAdminPage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-100">
+    <main className="min-h-screen bg-slate-100 text-slate-900">
 
-      {/* HEADER */}
+      {/* TOP HEADER */}
 
-      <header className="border-b bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-6">
+      <header className="border-b border-slate-200 bg-white">
 
-          <Link
-            href="/admin"
-            className="text-sm font-medium text-slate-500 hover:text-slate-900"
-          >
-            ← Back to Dashboard
-          </Link>
+        <div className="mx-auto max-w-7xl px-5 py-5 sm:px-6">
 
-          <div className="mt-4 flex flex-col justify-between gap-4 md:flex-row md:items-center">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
 
-            <div>
-              <h1 className="text-3xl font-bold text-slate-900">
-                Students
-              </h1>
+            <div className="flex items-center gap-4">
 
-              <p className="mt-2 text-slate-500">
-                Manage student records and information.
-              </p>
+              <Link
+                href="/admin"
+                className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-lg text-slate-600 transition hover:border-green-700 hover:bg-green-50 hover:text-green-800"
+              >
+                ←
+              </Link>
+
+              <div>
+
+                <div className="flex items-center gap-2">
+
+                  <span className="hidden rounded-full bg-green-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-green-800 sm:inline-flex">
+                    Admin Portal
+                  </span>
+
+                  <span className="text-xs font-semibold text-slate-400">
+                    Pleasantville Academy
+                  </span>
+
+                </div>
+
+                <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">
+                  Students
+                </h1>
+
+                <p className="mt-1 text-sm text-slate-500">
+                  Manage student records and information.
+                </p>
+
+              </div>
+
             </div>
 
             <button
               type="button"
               onClick={startAddStudent}
-              className="rounded-xl bg-green-800 px-5 py-3 font-semibold text-white shadow-sm transition hover:bg-green-700"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-800 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-green-700 hover:shadow-md"
             >
-              + Add Student
+              <span className="text-lg">+</span>
+              Add Student
             </button>
 
           </div>
 
         </div>
+
       </header>
 
-      <section className="mx-auto max-w-7xl px-6 py-8">
+      <section className="mx-auto max-w-7xl px-5 py-7 sm:px-6">
+
+        {/* BREADCRUMB */}
+
+        <div className="mb-6 flex items-center gap-2 text-sm">
+
+          <Link
+            href="/admin"
+            className="font-medium text-slate-500 hover:text-green-800"
+          >
+            Dashboard
+          </Link>
+
+          <span className="text-slate-300">
+            /
+          </span>
+
+          <span className="font-semibold text-slate-900">
+            Students
+          </span>
+
+        </div>
 
         {/* MESSAGES */}
 
         {message && (
-          <div className="mb-6 rounded-xl border border-green-200 bg-green-50 px-5 py-4 text-sm font-medium text-green-700">
+          <div className="mb-6 flex items-center gap-3 rounded-xl border border-green-200 bg-green-50 px-5 py-4 text-sm font-semibold text-green-800 shadow-sm">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-green-700 text-white">
+              ✓
+            </span>
             {message}
           </div>
         )}
 
         {error && (
-          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-medium text-red-700">
-            {error}
+          <div className="mb-6 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-semibold text-red-700 shadow-sm">
+            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-red-600 text-white">
+              !
+            </span>
+
+            <span>
+              {error}
+            </span>
           </div>
         )}
 
-        {/* FORM */}
+        {/* STATISTICS */}
 
-        {showForm && (
-          <div className="mb-8 rounded-2xl bg-white p-6 shadow-sm">
+        <div className="grid gap-4 sm:grid-cols-3">
 
-            <div className="flex items-center justify-between gap-4">
+          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+
+            <div className="flex items-center justify-between">
 
               <div>
-                <h2 className="text-xl font-bold text-slate-900">
-                  {editingId
-                    ? 'Edit Student'
-                    : 'Add New Student'}
-                </h2>
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                  Total Students
+                </p>
 
-                <p className="mt-1 text-sm text-slate-500">
-                  Enter the student's details below.
+                <p className="mt-2 text-3xl font-bold text-slate-950">
+                  {students.length}
                 </p>
               </div>
 
-              <button
-                type="button"
-                onClick={resetForm}
-                className="text-sm font-semibold text-slate-500 hover:text-slate-900"
-              >
-                Cancel
-              </button>
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-100 text-2xl">
+                🎓
+              </div>
+
+            </div>
+
+            <p className="mt-3 text-xs text-slate-500">
+              Registered student records
+            </p>
+
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+
+            <div className="flex items-center justify-between">
+
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                  Search Results
+                </p>
+
+                <p className="mt-2 text-3xl font-bold text-slate-950">
+                  {filteredStudents.length}
+                </p>
+              </div>
+
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-2xl">
+                🔎
+              </div>
+
+            </div>
+
+            <p className="mt-3 text-xs text-slate-500">
+              Students matching your search
+            </p>
+
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+
+            <div className="flex items-center justify-between">
+
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                  Records
+                </p>
+
+                <p className="mt-2 text-3xl font-bold text-slate-950">
+                  {students.length}
+                </p>
+              </div>
+
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-2xl">
+                📋
+              </div>
+
+            </div>
+
+            <p className="mt-3 text-xs text-slate-500">
+              Current student database
+            </p>
+
+          </div>
+
+        </div>
+
+        {/* ADD / EDIT FORM */}
+
+        {showForm && (
+
+          <div className="mt-7 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+            <div className="border-b border-slate-200 bg-slate-950 px-6 py-5">
+
+              <div className="flex items-center justify-between gap-4">
+
+                <div>
+
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-400">
+                    Student Management
+                  </p>
+
+                  <h2 className="mt-1 text-xl font-bold text-white">
+                    {editingId !== null
+                      ? 'Edit Student'
+                      : 'Add New Student'}
+                  </h2>
+
+                  <p className="mt-1 text-sm text-slate-400">
+                    {editingId !== null
+                      ? 'Update the student record below.'
+                      : 'Create a new student record.'}
+                  </p>
+
+                </div>
+
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="rounded-lg border border-slate-700 px-3 py-2 text-sm font-semibold text-slate-300 transition hover:bg-slate-800 hover:text-white"
+                >
+                  Cancel
+                </button>
+
+              </div>
 
             </div>
 
             <form
               onSubmit={handleSubmit}
-              className="mt-6 grid gap-5 md:grid-cols-2"
+              className="grid gap-6 p-6 md:grid-cols-2"
             >
 
               {/* STUDENT INFORMATION */}
 
               <div className="md:col-span-2">
-                <h3 className="border-b pb-2 text-sm font-bold uppercase tracking-wider text-green-800">
-                  Student Information
-                </h3>
+
+                <div className="flex items-center gap-3">
+
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-green-100">
+                    🎓
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900">
+                      Student Information
+                    </h3>
+
+                    <p className="text-xs text-slate-500">
+                      Basic information about the student
+                    </p>
+                  </div>
+
+                </div>
+
+                <div className="mt-4 h-px bg-slate-200" />
+
               </div>
 
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Full Name *
-                </label>
-
+              <FormField
+                label="Full Name"
+                required
+              >
                 <input
                   type="text"
                   value={fullName}
@@ -361,16 +534,12 @@ export default function StudentsAdminPage() {
                     setFullName(event.target.value)
                   }
                   placeholder="Student full name"
-                  className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className={inputClass}
                   required
                 />
-              </div>
+              </FormField>
 
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Student ID
-                </label>
-
+              <FormField label="Student ID">
                 <input
                   type="text"
                   value={studentId}
@@ -378,15 +547,11 @@ export default function StudentsAdminPage() {
                     setStudentId(event.target.value)
                   }
                   placeholder="e.g. PVA-2026-001"
-                  className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className={inputClass}
                 />
-              </div>
+              </FormField>
 
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Class
-                </label>
-
+              <FormField label="Class">
                 <input
                   type="text"
                   value={className}
@@ -394,56 +559,68 @@ export default function StudentsAdminPage() {
                     setClassName(event.target.value)
                   }
                   placeholder="e.g. Primary 4"
-                  className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className={inputClass}
                 />
-              </div>
+              </FormField>
 
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Gender
-                </label>
-
+              <FormField label="Gender">
                 <select
                   value={gender}
                   onChange={(event) =>
                     setGender(event.target.value)
                   }
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className={inputClass}
                 >
-                  <option value="">Select gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
+                  <option value="">
+                    Select gender
+                  </option>
+                  <option value="Male">
+                    Male
+                  </option>
+                  <option value="Female">
+                    Female
+                  </option>
                 </select>
-              </div>
+              </FormField>
 
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Date of Birth
-                </label>
-
+              <FormField label="Date of Birth">
                 <input
                   type="date"
                   value={dateOfBirth}
                   onChange={(event) =>
                     setDateOfBirth(event.target.value)
                   }
-                  className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className={inputClass}
                 />
-              </div>
+              </FormField>
 
               {/* PARENT INFORMATION */}
 
-              <div className="mt-3 md:col-span-2">
-                <h3 className="border-b pb-2 text-sm font-bold uppercase tracking-wider text-green-800">
-                  Parent / Guardian Information
-                </h3>
+              <div className="mt-2 md:col-span-2">
+
+                <div className="flex items-center gap-3">
+
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100">
+                    👨‍👩‍👧
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900">
+                      Parent / Guardian Information
+                    </h3>
+
+                    <p className="text-xs text-slate-500">
+                      Contact information for the parent or guardian
+                    </p>
+                  </div>
+
+                </div>
+
+                <div className="mt-4 h-px bg-slate-200" />
+
               </div>
 
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Parent / Guardian Name
-                </label>
-
+              <FormField label="Parent / Guardian Name">
                 <input
                   type="text"
                   value={parentName}
@@ -451,15 +628,11 @@ export default function StudentsAdminPage() {
                     setParentName(event.target.value)
                   }
                   placeholder="Parent or guardian name"
-                  className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className={inputClass}
                 />
-              </div>
+              </FormField>
 
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Parent / Guardian Phone
-                </label>
-
+              <FormField label="Parent / Guardian Phone">
                 <input
                   type="tel"
                   value={parentPhone}
@@ -467,15 +640,11 @@ export default function StudentsAdminPage() {
                     setParentPhone(event.target.value)
                   }
                   placeholder="Phone number"
-                  className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className={inputClass}
                 />
-              </div>
+              </FormField>
 
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Parent / Guardian Email
-                </label>
-
+              <FormField label="Parent / Guardian Email">
                 <input
                   type="email"
                   value={parentEmail}
@@ -483,15 +652,11 @@ export default function StudentsAdminPage() {
                     setParentEmail(event.target.value)
                   }
                   placeholder="Email address"
-                  className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className={inputClass}
                 />
-              </div>
+              </FormField>
 
-              <div>
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Address
-                </label>
-
+              <FormField label="Address">
                 <input
                   type="text"
                   value={address}
@@ -499,52 +664,52 @@ export default function StudentsAdminPage() {
                     setAddress(event.target.value)
                   }
                   placeholder="Home address"
-                  className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
+                  className={inputClass}
                 />
-              </div>
+              </FormField>
 
               {/* NOTES */}
 
               <div className="md:col-span-2">
 
-                <label className="mb-2 block text-sm font-semibold text-slate-700">
-                  Notes
-                </label>
+                <FormField label="Notes">
 
-                <textarea
-                  value={notes}
-                  onChange={(event) =>
-                    setNotes(event.target.value)
-                  }
-                  placeholder="Additional information about the student..."
-                  rows={4}
-                  className="w-full resize-none rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
-                />
+                  <textarea
+                    value={notes}
+                    onChange={(event) =>
+                      setNotes(event.target.value)
+                    }
+                    placeholder="Additional information about the student..."
+                    rows={4}
+                    className={`${inputClass} resize-none`}
+                  />
+
+                </FormField>
 
               </div>
 
-              {/* SUBMIT */}
+              {/* FORM ACTIONS */}
 
-              <div className="flex gap-3 md:col-span-2">
-
-                <button
-                  type="submit"
-                  disabled={saving}
-                  className="rounded-xl bg-green-800 px-6 py-3 font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {saving
-                    ? 'Saving...'
-                    : editingId
-                      ? 'Save Changes'
-                      : 'Add Student'}
-                </button>
+              <div className="flex flex-col-reverse gap-3 border-t border-slate-200 pt-5 sm:flex-row md:col-span-2">
 
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="rounded-xl border border-slate-300 bg-white px-6 py-3 font-semibold text-slate-700 hover:bg-slate-50"
+                  className="rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-50"
                 >
                   Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="rounded-xl bg-green-800 px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {saving
+                    ? 'Saving...'
+                    : editingId !== null
+                      ? 'Save Changes'
+                      : 'Add Student'}
                 </button>
 
               </div>
@@ -552,101 +717,323 @@ export default function StudentsAdminPage() {
             </form>
 
           </div>
+
         )}
 
         {/* SEARCH */}
 
-        <div className="mb-6 rounded-2xl bg-white p-5 shadow-sm">
+        <div className="mt-7 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
 
-          <label className="mb-2 block text-sm font-semibold text-slate-700">
-            Search Students
-          </label>
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
 
-          <input
-            type="search"
-            value={search}
-            onChange={(event) =>
-              setSearch(event.target.value)
-            }
-            placeholder="Search by name, student ID, class, parent or phone..."
-            className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-green-700 focus:ring-2 focus:ring-green-100"
-          />
+            <div>
 
-          <p className="mt-3 text-sm text-slate-500">
-            Showing {filteredStudents.length} of{' '}
-            {students.length} students
-          </p>
+              <h2 className="text-lg font-bold text-slate-950">
+                Student Records
+              </h2>
 
-        </div>
+              <p className="mt-1 text-sm text-slate-500">
+                Search and manage registered students.
+              </p>
 
-        {/* STUDENTS */}
-
-        {loading ? (
-
-          <div className="rounded-2xl bg-white p-10 text-center shadow-sm">
-            <div className="text-lg font-semibold text-slate-700">
-              Loading students...
             </div>
+
+            <div className="w-full md:max-w-md">
+
+              <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-slate-500">
+                Search
+              </label>
+
+              <div className="relative">
+
+                <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                  🔎
+                </span>
+
+                <input
+                  type="search"
+                  value={search}
+                  onChange={(event) =>
+                    setSearch(event.target.value)
+                  }
+                  placeholder="Name, ID, class, parent or phone..."
+                  className="w-full rounded-xl border border-slate-300 bg-slate-50 py-3 pl-11 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:bg-white focus:ring-2 focus:ring-green-100"
+                />
+
+              </div>
+
+            </div>
+
           </div>
 
-        ) : filteredStudents.length === 0 ? (
+          <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-4">
 
-          <div className="rounded-2xl bg-white p-10 text-center shadow-sm">
-
-            <div className="text-5xl">
-              🎓
-            </div>
-
-            <h2 className="mt-4 text-xl font-bold text-slate-900">
-              {students.length === 0
-                ? 'No students yet'
-                : 'No students found'}
-            </h2>
-
-            <p className="mt-2 text-slate-500">
-              {students.length === 0
-                ? 'Add your first student to get started.'
-                : 'Try changing your search.'}
+            <p className="text-sm text-slate-500">
+              Showing{' '}
+              <span className="font-bold text-slate-900">
+                {filteredStudents.length}
+              </span>{' '}
+              of{' '}
+              <span className="font-bold text-slate-900">
+                {students.length}
+              </span>{' '}
+              students
             </p>
 
-            {students.length === 0 && (
+            {search && (
               <button
                 type="button"
-                onClick={startAddStudent}
-                className="mt-5 rounded-xl bg-green-800 px-5 py-3 font-semibold text-white hover:bg-green-700"
+                onClick={() => setSearch('')}
+                className="text-sm font-semibold text-green-800 hover:text-green-700"
               >
-                + Add Student
+                Clear search
               </button>
             )}
 
           </div>
 
-        ) : (
+        </div>
 
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        {/* STUDENT LIST */}
 
-            {filteredStudents.map((student) => (
+        <div className="mt-6">
 
-              <article
-                key={student.id}
-                className="rounded-2xl bg-white p-6 shadow-sm transition hover:shadow-md"
-              >
+          {loading ? (
 
-                <div className="flex items-start justify-between gap-4">
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
 
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-green-100 text-2xl">
+              {[1, 2, 3].map((item) => (
+
+                <div
+                  key={item}
+                  className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+                >
+
+                  <div className="animate-pulse">
+
+                    <div className="flex gap-4">
+
+                      <div className="h-12 w-12 rounded-full bg-slate-200" />
+
+                      <div className="flex-1">
+
+                        <div className="h-5 w-2/3 rounded bg-slate-200" />
+
+                        <div className="mt-2 h-4 w-1/3 rounded bg-slate-200" />
+
+                      </div>
+
+                    </div>
+
+                    <div className="mt-6 space-y-3">
+
+                      <div className="h-4 rounded bg-slate-200" />
+                      <div className="h-4 rounded bg-slate-200" />
+                      <div className="h-4 rounded bg-slate-200" />
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              ))}
+
+            </div>
+
+          ) : filteredStudents.length === 0 ? (
+
+            <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm">
+
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-green-50 text-3xl">
+                🎓
+              </div>
+
+              <h2 className="mt-5 text-xl font-bold text-slate-950">
+                {students.length === 0
+                  ? 'No students yet'
+                  : 'No students found'}
+              </h2>
+
+              <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
+                {students.length === 0
+                  ? 'Add your first student to begin building your student records.'
+                  : 'No student records match your current search. Try another name, ID or class.'}
+              </p>
+
+              {students.length === 0 && (
+                <button
+                  type="button"
+                  onClick={startAddStudent}
+                  className="mt-6 rounded-xl bg-green-800 px-5 py-3 text-sm font-bold text-white transition hover:bg-green-700"
+                >
+                  + Add First Student
+                </button>
+              )}
+
+            </div>
+
+          ) : (
+
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+
+              {filteredStudents.map((student) => (
+
+                <article
+                  key={student.id}
+                  className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:border-green-200 hover:shadow-lg"
+                >
+
+                  {/* CARD HEADER */}
+
+                  <div className="border-b border-slate-100 bg-slate-50 px-6 py-5">
+
+                    <div className="flex items-start gap-4">
+
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-green-100 text-2xl">
+                        🎓
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+
+                        <h2 className="truncate text-lg font-bold text-slate-950">
+                          {student.full_name}
+                        </h2>
+
+                        {student.student_id ? (
+
+                          <p className="mt-1 text-xs font-bold uppercase tracking-wider text-green-700">
+                            {student.student_id}
+                          </p>
+
+                        ) : (
+
+                          <p className="mt-1 text-xs text-slate-400">
+                            No student ID
+                          </p>
+
+                        )}
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  {/* CARD DETAILS */}
+
+                  <div className="space-y-3 px-6 py-5">
+
+                    <InfoRow
+                      label="Class"
+                      value={student.class_name || 'Not provided'}
+                    />
+
+                    <InfoRow
+                      label="Gender"
+                      value={student.gender || 'Not provided'}
+                    />
+
+                    <InfoRow
+                      label="Date of Birth"
+                      value={formatDate(student.date_of_birth)}
+                    />
+
+                    <InfoRow
+                      label="Parent / Guardian"
+                      value={student.parent_name || 'Not provided'}
+                    />
+
+                  </div>
+
+                  {/* CARD ACTIONS */}
+
+                  <div className="grid grid-cols-3 gap-2 border-t border-slate-100 bg-white px-5 py-4">
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setSelectedStudent(student)
+                      }
+                      className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 transition hover:border-green-200 hover:bg-green-50 hover:text-green-800"
+                    >
+                      Details
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        startEditStudent(student)
+                      }
+                      className="rounded-lg bg-slate-950 px-3 py-2 text-xs font-bold text-white transition hover:bg-slate-800"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        deleteStudent(student)
+                      }
+                      className="rounded-lg border border-red-200 px-3 py-2 text-xs font-bold text-red-600 transition hover:bg-red-50"
+                    >
+                      Delete
+                    </button>
+
+                  </div>
+
+                </article>
+
+              ))}
+
+            </div>
+
+          )}
+
+        </div>
+
+      </section>
+
+      {/* DETAILS MODAL */}
+
+      {selectedStudent && (
+
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setSelectedStudent(null)
+            }
+          }}
+        >
+
+          <div className="max-h-[92vh] w-full max-w-2xl overflow-hidden rounded-2xl bg-white shadow-2xl">
+
+            {/* MODAL HEADER */}
+
+            <div className="bg-slate-950 px-6 py-6">
+
+              <div className="flex items-start justify-between gap-4">
+
+                <div className="flex items-center gap-4">
+
+                  <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-green-700 text-2xl">
                     🎓
                   </div>
 
-                  <div className="flex-1">
+                  <div>
 
-                    <h2 className="text-lg font-bold text-slate-900">
-                      {student.full_name}
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-400">
+                      Student Details
+                    </p>
+
+                    <h2 className="mt-1 text-2xl font-bold text-white">
+                      {selectedStudent.full_name}
                     </h2>
 
-                    {student.student_id && (
-                      <p className="mt-1 text-sm font-medium text-green-700">
-                        ID: {student.student_id}
+                    {selectedStudent.student_id && (
+                      <p className="mt-1 text-sm text-slate-400">
+                        Student ID: {selectedStudent.student_id}
                       </p>
                     )}
 
@@ -654,231 +1041,142 @@ export default function StudentsAdminPage() {
 
                 </div>
 
-                <div className="mt-5 space-y-2 text-sm">
-
-                  <div className="flex justify-between gap-4">
-                    <span className="text-slate-500">
-                      Class
-                    </span>
-
-                    <span className="font-medium text-slate-900">
-                      {student.class_name || 'Not provided'}
-                    </span>
-                  </div>
-
-                  <div className="flex justify-between gap-4">
-                    <span className="text-slate-500">
-                      Gender
-                    </span>
-
-                    <span className="font-medium text-slate-900">
-                      {student.gender || 'Not provided'}
-                    </span>
-                  </div>
-
-                  <div className="flex justify-between gap-4">
-                    <span className="text-slate-500">
-                      Parent
-                    </span>
-
-                    <span className="max-w-[60%] text-right font-medium text-slate-900">
-                      {student.parent_name || 'Not provided'}
-                    </span>
-                  </div>
-
-                </div>
-
-                <div className="mt-5 grid grid-cols-3 gap-2">
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setSelectedStudent(student)
-                    }
-                    className="rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-                  >
-                    Details
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      startEditStudent(student)
-                    }
-                    className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-700"
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      deleteStudent(student)
-                    }
-                    className="rounded-lg border border-red-200 px-3 py-2 text-sm font-semibold text-red-600 hover:bg-red-50"
-                  >
-                    Delete
-                  </button>
-
-                </div>
-
-              </article>
-
-            ))}
-
-          </div>
-
-        )}
-
-      </section>
-
-      {/* STUDENT DETAILS MODAL */}
-
-      {selectedStudent && (
-
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-
-          <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl">
-
-            <div className="flex items-start justify-between border-b p-6">
-
-              <div>
-
-                <p className="text-sm font-semibold uppercase tracking-wider text-green-700">
-                  Student Details
-                </p>
-
-                <h2 className="mt-1 text-2xl font-bold text-slate-900">
-                  {selectedStudent.full_name}
-                </h2>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setSelectedStudent(null)
+                  }
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-700 text-xl text-slate-400 transition hover:bg-slate-800 hover:text-white"
+                >
+                  ×
+                </button>
 
               </div>
+
+            </div>
+
+            {/* MODAL CONTENT */}
+
+            <div className="max-h-[65vh] overflow-y-auto p-6">
+
+              <div className="grid gap-6 sm:grid-cols-2">
+
+                <DetailItem
+                  label="Student ID"
+                  value={
+                    selectedStudent.student_id ||
+                    'Not provided'
+                  }
+                />
+
+                <DetailItem
+                  label="Class"
+                  value={
+                    selectedStudent.class_name ||
+                    'Not provided'
+                  }
+                />
+
+                <DetailItem
+                  label="Gender"
+                  value={
+                    selectedStudent.gender ||
+                    'Not provided'
+                  }
+                />
+
+                <DetailItem
+                  label="Date of Birth"
+                  value={formatDate(
+                    selectedStudent.date_of_birth
+                  )}
+                />
+
+                <div className="sm:col-span-2">
+
+                  <SectionHeading>
+                    Parent / Guardian Information
+                  </SectionHeading>
+
+                </div>
+
+                <DetailItem
+                  label="Name"
+                  value={
+                    selectedStudent.parent_name ||
+                    'Not provided'
+                  }
+                />
+
+                <DetailItem
+                  label="Phone"
+                  value={
+                    selectedStudent.parent_phone ||
+                    'Not provided'
+                  }
+                />
+
+                <DetailItem
+                  label="Email"
+                  value={
+                    selectedStudent.parent_email ||
+                    'Not provided'
+                  }
+                />
+
+                <DetailItem
+                  label="Address"
+                  value={
+                    selectedStudent.address ||
+                    'Not provided'
+                  }
+                />
+
+                <div className="sm:col-span-2">
+
+                  <SectionHeading>
+                    Additional Notes
+                  </SectionHeading>
+
+                  <div className="mt-4 rounded-xl bg-slate-50 p-4">
+
+                    <p className="whitespace-pre-wrap text-sm leading-6 text-slate-700">
+                      {selectedStudent.notes ||
+                        'No additional notes.'}
+                    </p>
+
+                  </div>
+
+                </div>
+
+                <div className="sm:col-span-2">
+
+                  <p className="text-xs text-slate-400">
+                    Record created:{' '}
+                    {formatDate(
+                      selectedStudent.created_at
+                    )}
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* MODAL FOOTER */}
+
+            <div className="flex flex-col-reverse gap-3 border-t border-slate-200 bg-slate-50 p-5 sm:flex-row sm:justify-end">
 
               <button
                 type="button"
                 onClick={() =>
                   setSelectedStudent(null)
                 }
-                className="rounded-lg px-3 py-2 text-xl text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-100"
               >
-                ×
+                Close
               </button>
-
-            </div>
-
-            <div className="grid gap-6 p-6 md:grid-cols-2">
-
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  Student ID
-                </p>
-
-                <p className="mt-1 font-medium text-slate-900">
-                  {selectedStudent.student_id ||
-                    'Not provided'}
-                </p>
-              </div>
-
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  Class
-                </p>
-
-                <p className="mt-1 font-medium text-slate-900">
-                  {selectedStudent.class_name ||
-                    'Not provided'}
-                </p>
-              </div>
-
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  Gender
-                </p>
-
-                <p className="mt-1 font-medium text-slate-900">
-                  {selectedStudent.gender ||
-                    'Not provided'}
-                </p>
-              </div>
-
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  Date of Birth
-                </p>
-
-                <p className="mt-1 font-medium text-slate-900">
-                  {formatDate(
-                    selectedStudent.date_of_birth
-                  )}
-                </p>
-              </div>
-
-              <div className="md:col-span-2">
-                <h3 className="border-b pb-2 text-sm font-bold uppercase tracking-wider text-green-800">
-                  Parent / Guardian
-                </h3>
-              </div>
-
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  Name
-                </p>
-
-                <p className="mt-1 font-medium text-slate-900">
-                  {selectedStudent.parent_name ||
-                    'Not provided'}
-                </p>
-              </div>
-
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  Phone
-                </p>
-
-                <p className="mt-1 font-medium text-slate-900">
-                  {selectedStudent.parent_phone ||
-                    'Not provided'}
-                </p>
-              </div>
-
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  Email
-                </p>
-
-                <p className="mt-1 break-words font-medium text-slate-900">
-                  {selectedStudent.parent_email ||
-                    'Not provided'}
-                </p>
-              </div>
-
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  Address
-                </p>
-
-                <p className="mt-1 font-medium text-slate-900">
-                  {selectedStudent.address ||
-                    'Not provided'}
-                </p>
-              </div>
-
-              <div className="md:col-span-2">
-
-                <h3 className="border-b pb-2 text-sm font-bold uppercase tracking-wider text-green-800">
-                  Notes
-                </h3>
-
-                <p className="mt-3 whitespace-pre-wrap text-slate-700">
-                  {selectedStudent.notes ||
-                    'No additional notes.'}
-                </p>
-
-              </div>
-
-            </div>
-
-            <div className="flex justify-end gap-3 border-t bg-slate-50 p-5">
 
               <button
                 type="button"
@@ -887,19 +1185,9 @@ export default function StudentsAdminPage() {
                   setSelectedStudent(null)
                   startEditStudent(student)
                 }}
-                className="rounded-xl bg-slate-900 px-5 py-3 font-semibold text-white hover:bg-slate-700"
+                className="rounded-xl bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-slate-800"
               >
                 Edit Student
-              </button>
-
-              <button
-                type="button"
-                onClick={() =>
-                  setSelectedStudent(null)
-                }
-                className="rounded-xl border border-slate-300 bg-white px-5 py-3 font-semibold text-slate-700 hover:bg-slate-100"
-              >
-                Close
               </button>
 
             </div>
@@ -911,5 +1199,99 @@ export default function StudentsAdminPage() {
       )}
 
     </main>
+  )
+}
+
+/* -------------------------------------------------------------------------- */
+/* REUSABLE UI COMPONENTS                                                     */
+/* -------------------------------------------------------------------------- */
+
+const inputClass =
+  'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100'
+
+function FormField({
+  label,
+  required,
+  children,
+}: {
+  label: string
+  required?: boolean
+  children: React.ReactNode
+}) {
+  return (
+    <div>
+      <label className="mb-2 block text-sm font-bold text-slate-700">
+        {label}
+        {required && (
+          <span className="ml-1 text-red-500">
+            *
+          </span>
+        )}
+      </label>
+
+      {children}
+    </div>
+  )
+}
+
+function InfoRow({
+  label,
+  value,
+}: {
+  label: string
+  value: string
+}) {
+  return (
+    <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-3 last:border-0 last:pb-0">
+
+      <span className="text-sm text-slate-500">
+        {label}
+      </span>
+
+      <span className="max-w-[60%] text-right text-sm font-semibold text-slate-900">
+        {value}
+      </span>
+
+    </div>
+  )
+}
+
+function DetailItem({
+  label,
+  value,
+}: {
+  label: string
+  value: string
+}) {
+  return (
+    <div>
+
+      <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-slate-400">
+        {label}
+      </p>
+
+      <p className="mt-2 break-words text-sm font-semibold text-slate-900">
+        {value}
+      </p>
+
+    </div>
+  )
+}
+
+function SectionHeading({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <div className="flex items-center gap-3 border-b border-slate-200 pb-3">
+
+      <div className="h-5 w-1 rounded-full bg-green-700" />
+
+      <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900">
+        {children}
+      </h3>
+
+    </div>
   )
 }
