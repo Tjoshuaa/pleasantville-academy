@@ -1,6 +1,8 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 
 const sections = [
   {
@@ -60,12 +62,23 @@ const sections = [
 ]
 
 export default function AdminDashboard() {
+  const router = useRouter()
+  const supabase = createClient()
+
+  async function handleLogout() {
+    await supabase.auth.signOut()
+
+    router.push('/admin/login')
+    router.refresh()
+  }
+
   return (
     <main className="min-h-screen bg-slate-100">
       <div className="flex min-h-screen">
 
         {/* Sidebar */}
         <aside className="hidden w-64 bg-slate-900 text-white md:block">
+
           <div className="border-b border-slate-800 px-6 py-6">
             <h1 className="text-lg font-bold">
               Pleasantville Academy
@@ -77,6 +90,7 @@ export default function AdminDashboard() {
           </div>
 
           <nav className="p-4">
+
             <Link
               href="/admin"
               className="flex items-center rounded-lg bg-white/10 px-4 py-3 text-sm font-medium"
@@ -92,7 +106,18 @@ export default function AdminDashboard() {
               🌐
               <span className="ml-3">View Website</span>
             </Link>
+
           </nav>
+
+          <div className="absolute bottom-6 w-64 px-4">
+            <button
+              onClick={handleLogout}
+              className="w-full rounded-lg px-4 py-3 text-left text-sm text-slate-300 transition hover:bg-red-500/10 hover:text-red-300"
+            >
+              🚪 Logout
+            </button>
+          </div>
+
         </aside>
 
         {/* Main */}
@@ -100,7 +125,9 @@ export default function AdminDashboard() {
 
           {/* Header */}
           <header className="border-b bg-white px-6 py-5">
+
             <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+
               <div>
                 <h2 className="text-2xl font-bold text-slate-900">
                   Admin Dashboard
@@ -111,19 +138,33 @@ export default function AdminDashboard() {
                 </p>
               </div>
 
-              <Link
-                href="/"
-                className="inline-flex w-fit rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
-              >
-                View Website
-              </Link>
+              <div className="flex gap-3">
+
+                <Link
+                  href="/"
+                  className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                >
+                  View Website
+                </Link>
+
+                <button
+                  onClick={handleLogout}
+                  className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700 md:hidden"
+                >
+                  Logout
+                </button>
+
+              </div>
+
             </div>
+
           </header>
 
           <div className="p-6">
 
             {/* Welcome */}
             <div className="rounded-2xl bg-slate-900 p-6 text-white">
+
               <p className="text-sm text-slate-400">
                 Welcome back
               </p>
@@ -137,6 +178,7 @@ export default function AdminDashboard() {
                 announcements, gallery and school information from
                 one place.
               </p>
+
             </div>
 
             {/* Statistics */}
@@ -203,6 +245,7 @@ export default function AdminDashboard() {
                     href={section.href}
                     className="group rounded-2xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
                   >
+
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-2xl">
                       {section.icon}
                     </div>
@@ -218,14 +261,18 @@ export default function AdminDashboard() {
                     <p className="mt-5 text-sm font-semibold text-slate-900">
                       Manage →
                     </p>
+
                   </Link>
                 ))}
 
               </div>
+
             </div>
 
           </div>
+
         </section>
+
       </div>
     </main>
   )
