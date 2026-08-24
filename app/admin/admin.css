@@ -1,0 +1,342 @@
+/* =========================================================
+   PLEASANTVILLE ACADEMY
+   ADMIN DASHBOARD GLOBAL THEME
+   ========================================================= */
+
+/* ---------- ADMIN SHELL ---------- */
+
+.admin-shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(22, 101, 52, 0.08),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(15, 23, 42, 0.05),
+      transparent 35%
+    ),
+    #f1f5f9;
+
+  color: #0f172a;
+}
+
+/* Make the admin area use a professional font rendering */
+.admin-shell,
+.admin-shell * {
+  box-sizing: border-box;
+}
+
+/* ---------- GLOBAL PAGE BACKGROUNDS ---------- */
+
+/*
+  Existing admin pages commonly use:
+  bg-slate-100
+  bg-gray-100
+  bg-white
+
+  These rules make the outer page background consistent.
+*/
+
+.admin-shell .bg-slate-100 {
+  background-color: transparent !important;
+}
+
+.admin-shell .bg-gray-100 {
+  background-color: transparent !important;
+}
+
+/* ---------- ADMIN HEADERS ---------- */
+
+.admin-shell header {
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #f8fafc 100%
+    ) !important;
+
+  border-color: #e2e8f0 !important;
+}
+
+/* ---------- MAIN CONTENT ---------- */
+
+.admin-shell section {
+  position: relative;
+}
+
+/* ---------- CARDS / PANELS ---------- */
+
+/*
+  Existing pages use bg-white heavily.
+  We keep cards white because this gives the
+  dashboard a clean professional contrast.
+*/
+
+.admin-shell .bg-white {
+  background-color: #ffffff !important;
+}
+
+/* ---------- CARD BORDERS ---------- */
+
+.admin-shell .border-slate-200 {
+  border-color: #dbe3ec !important;
+}
+
+.admin-shell .border-slate-300 {
+  border-color: #cbd5e1 !important;
+}
+
+.admin-shell .border-gray-200 {
+  border-color: #dbe3ec !important;
+}
+
+.admin-shell .border-gray-300 {
+  border-color: #cbd5e1 !important;
+}
+
+/* ---------- CARD SHADOWS ---------- */
+
+.admin-shell .shadow-sm {
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 4px 12px rgba(15, 23, 42, 0.03) !important;
+}
+
+.admin-shell .shadow-lg {
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.08) !important;
+}
+
+/* ---------- FORM INPUTS ---------- */
+
+.admin-shell input,
+.admin-shell select,
+.admin-shell textarea {
+  color: #0f172a;
+  background-color: #ffffff;
+}
+
+.admin-shell input::placeholder,
+.admin-shell textarea::placeholder {
+  color: #94a3b8;
+}
+
+/* ---------- FOCUS STATES ---------- */
+
+.admin-shell input:focus,
+.admin-shell select:focus,
+.admin-shell textarea:focus {
+  outline: none;
+}
+
+/* ---------- BUTTON POLISH ---------- */
+
+.admin-shell button {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+/* ---------- GREEN BRAND ELEMENTS ---------- */
+
+.admin-shell .bg-green-800 {
+  background-color: #166534 !important;
+}
+
+.admin-shell .bg-green-700 {
+  background-color: #15803d !important;
+}
+
+.admin-shell .text-green-800 {
+  color: #166534 !important;
+}
+
+.admin-shell .text-green-700 {
+  color: #15803d !important;
+}
+
+.admin-shell .border-green-200 {
+  border-color: #bbf7d0 !important;
+}
+
+.admin-shell .bg-green-50 {
+  background-color: #f0fdf4 !important;
+}
+
+.admin-shell .bg-green-100 {
+  background-color: #dcfce7 !important;
+}
+
+/* ---------- PROFESSIONAL PAGE HEADER ---------- */
+
+.admin-shell header h1 {
+  letter-spacing: -0.025em;
+}
+
+/* ---------- SECTION HEADINGS ---------- */
+
+.admin-shell h1,
+.admin-shell h2,
+.admin-shell h3 {
+  color: #0f172a;
+}
+
+/* ---------- SECONDARY TEXT ---------- */
+
+.admin-shell .text-slate-500 {
+  color: #64748b !important;
+}
+
+.admin-shell .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+.admin-shell .text-slate-600 {
+  color: #475569 !important;
+}
+
+.admin-shell .text-slate-700 {
+  color: #334155 !important;
+}
+
+/* ---------- DARK ACTION BUTTONS ---------- */
+
+.admin-shell .bg-slate-900 {
+  background-color: #0f172a !important;
+}
+
+.admin-shell .bg-slate-800 {
+  background-color: #1e293b !important;
+}
+
+.admin-shell .text-slate-900 {
+  color: #0f172a !important;
+}
+
+/* ---------- LIGHT SLATE BACKGROUNDS ---------- */
+
+.admin-shell .bg-slate-50 {
+  background-color: #f8fafc !important;
+}
+
+.admin-shell .bg-slate-200 {
+  background-color: #e2e8f0 !important;
+}
+
+/* ---------- GRADIENT CARD HEADERS ---------- */
+
+.admin-shell .from-green-50 {
+  --tw-gradient-from: #f0fdf4 !important;
+}
+
+.admin-shell .to-white {
+  --tw-gradient-to: #ffffff !important;
+}
+
+/* ---------- SUCCESS MESSAGE ---------- */
+
+.admin-shell .bg-green-50 {
+  background-color: #f0fdf4 !important;
+}
+
+.admin-shell .text-green-800 {
+  color: #166534 !important;
+}
+
+/* ---------- ERROR MESSAGE ---------- */
+
+.admin-shell .bg-red-50 {
+  background-color: #fef2f2 !important;
+}
+
+.admin-shell .text-red-700 {
+  color: #b91c1c !important;
+}
+
+.admin-shell .text-red-600 {
+  color: #dc2626 !important;
+}
+
+.admin-shell .border-red-200 {
+  border-color: #fecaca !important;
+}
+
+/* ---------- BLUE ACCENTS ---------- */
+
+.admin-shell .bg-blue-100 {
+  background-color: #dbeafe !important;
+}
+
+/* ---------- MODALS ---------- */
+
+.admin-shell .fixed.inset-0 {
+  isolation: isolate;
+}
+
+.admin-shell .backdrop-blur-sm {
+  backdrop-filter: blur(6px);
+}
+
+/* ---------- TABLES ---------- */
+
+.admin-shell table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.admin-shell th {
+  color: #475569;
+  background-color: #f8fafc;
+  font-weight: 700;
+}
+
+.admin-shell td {
+  color: #334155;
+}
+
+/* ---------- LINKS ---------- */
+
+.admin-shell a {
+  transition:
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+/* ---------- SCROLLBAR ---------- */
+
+.admin-shell ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.admin-shell ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.admin-shell ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+.admin-shell ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 640px) {
+  .admin-shell {
+    background: #f1f5f9;
+  }
+
+  .admin-shell header {
+    background: #ffffff !important;
+  }
+}
