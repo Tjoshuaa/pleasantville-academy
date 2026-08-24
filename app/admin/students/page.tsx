@@ -260,11 +260,11 @@ export default function StudentsAdminPage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-100 text-slate-900">
+    <main className="min-h-screen bg-[#eef4f0] text-slate-900">
 
-      {/* TOP HEADER */}
+      {/* HEADER */}
 
-      <header className="border-b border-slate-200 bg-white">
+      <header className="border-b border-green-950/10 bg-[#123b2a] shadow-sm">
 
         <div className="mx-auto max-w-7xl px-5 py-5 sm:px-6">
 
@@ -274,30 +274,30 @@ export default function StudentsAdminPage() {
 
               <Link
                 href="/admin"
-                className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-lg text-slate-600 transition hover:border-green-700 hover:bg-green-50 hover:text-green-800"
+                className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-lg text-white transition hover:bg-white/20"
               >
                 ←
               </Link>
 
               <div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
 
-                  <span className="hidden rounded-full bg-green-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-green-800 sm:inline-flex">
+                  <span className="rounded-full bg-green-400/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-green-300">
                     Admin Portal
                   </span>
 
-                  <span className="text-xs font-semibold text-slate-400">
+                  <span className="text-xs font-semibold text-green-100/60">
                     Pleasantville Academy
                   </span>
 
                 </div>
 
-                <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">
+                <h1 className="mt-1 text-2xl font-bold tracking-tight text-white sm:text-3xl">
                   Students
                 </h1>
 
-                <p className="mt-1 text-sm text-slate-500">
+                <p className="mt-1 text-sm text-green-100/70">
                   Manage student records and information.
                 </p>
 
@@ -308,7 +308,7 @@ export default function StudentsAdminPage() {
             <button
               type="button"
               onClick={startAddStudent}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-800 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-green-700 hover:shadow-md"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#d6a84f] px-5 py-3 text-sm font-bold text-[#173322] shadow-sm transition hover:bg-[#e2b861] hover:shadow-md"
             >
               <span className="text-lg">+</span>
               Add Student
@@ -328,7 +328,7 @@ export default function StudentsAdminPage() {
 
           <Link
             href="/admin"
-            className="font-medium text-slate-500 hover:text-green-800"
+            className="font-medium text-slate-500 transition hover:text-green-800"
           >
             Dashboard
           </Link>
@@ -337,7 +337,7 @@ export default function StudentsAdminPage() {
             /
           </span>
 
-          <span className="font-semibold text-slate-900">
+          <span className="font-semibold text-green-900">
             Students
           </span>
 
@@ -346,7 +346,7 @@ export default function StudentsAdminPage() {
         {/* MESSAGES */}
 
         {message && (
-          <div className="mb-6 flex items-center gap-3 rounded-xl border border-green-200 bg-green-50 px-5 py-4 text-sm font-semibold text-green-800 shadow-sm">
+          <div className="mb-6 flex items-center gap-3 rounded-2xl border border-green-200 bg-[#e4f3e9] px-5 py-4 text-sm font-semibold text-green-900 shadow-sm">
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-green-700 text-white">
               ✓
             </span>
@@ -355,7 +355,7 @@ export default function StudentsAdminPage() {
         )}
 
         {error && (
-          <div className="mb-6 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-semibold text-red-700 shadow-sm">
+          <div className="mb-6 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-semibold text-red-700 shadow-sm">
             <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-red-600 text-white">
               !
             </span>
@@ -370,79 +370,85 @@ export default function StudentsAdminPage() {
 
         <div className="grid gap-4 sm:grid-cols-3">
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="rounded-2xl border border-green-900/10 bg-[#e4f1e8] p-5 shadow-sm">
 
             <div className="flex items-center justify-between">
 
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+
+                <p className="text-xs font-bold uppercase tracking-wider text-green-900/55">
                   Total Students
                 </p>
 
-                <p className="mt-2 text-3xl font-bold text-slate-950">
+                <p className="mt-2 text-3xl font-bold text-green-950">
                   {students.length}
                 </p>
+
               </div>
 
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-100 text-2xl">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-700 text-2xl text-white shadow-sm">
                 🎓
               </div>
 
             </div>
 
-            <p className="mt-3 text-xs text-slate-500">
+            <p className="mt-3 text-xs text-green-900/60">
               Registered student records
             </p>
 
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="rounded-2xl border border-blue-900/10 bg-[#e9f1f8] p-5 shadow-sm">
 
             <div className="flex items-center justify-between">
 
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+
+                <p className="text-xs font-bold uppercase tracking-wider text-blue-900/55">
                   Search Results
                 </p>
 
-                <p className="mt-2 text-3xl font-bold text-slate-950">
+                <p className="mt-2 text-3xl font-bold text-blue-950">
                   {filteredStudents.length}
                 </p>
+
               </div>
 
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-2xl">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-700 text-2xl text-white shadow-sm">
                 🔎
               </div>
 
             </div>
 
-            <p className="mt-3 text-xs text-slate-500">
+            <p className="mt-3 text-xs text-blue-900/60">
               Students matching your search
             </p>
 
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="rounded-2xl border border-amber-900/10 bg-[#faf1df] p-5 shadow-sm">
 
             <div className="flex items-center justify-between">
 
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+
+                <p className="text-xs font-bold uppercase tracking-wider text-amber-900/55">
                   Records
                 </p>
 
-                <p className="mt-2 text-3xl font-bold text-slate-950">
+                <p className="mt-2 text-3xl font-bold text-amber-950">
                   {students.length}
                 </p>
+
               </div>
 
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-2xl">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#b8892f] text-2xl text-white shadow-sm">
                 📋
               </div>
 
             </div>
 
-            <p className="mt-3 text-xs text-slate-500">
+            <p className="mt-3 text-xs text-amber-900/60">
               Current student database
             </p>
 
@@ -454,15 +460,15 @@ export default function StudentsAdminPage() {
 
         {showForm && (
 
-          <div className="mt-7 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div className="mt-7 overflow-hidden rounded-2xl border border-green-900/10 bg-[#f7fbf8] shadow-md">
 
-            <div className="border-b border-slate-200 bg-slate-950 px-6 py-5">
+            <div className="bg-[#173f2d] px-6 py-5">
 
               <div className="flex items-center justify-between gap-4">
 
                 <div>
 
-                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-400">
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#d6a84f]">
                     Student Management
                   </p>
 
@@ -472,7 +478,7 @@ export default function StudentsAdminPage() {
                       : 'Add New Student'}
                   </h2>
 
-                  <p className="mt-1 text-sm text-slate-400">
+                  <p className="mt-1 text-sm text-green-100/65">
                     {editingId !== null
                       ? 'Update the student record below.'
                       : 'Create a new student record.'}
@@ -483,7 +489,7 @@ export default function StudentsAdminPage() {
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="rounded-lg border border-slate-700 px-3 py-2 text-sm font-semibold text-slate-300 transition hover:bg-slate-800 hover:text-white"
+                  className="rounded-lg border border-white/15 px-3 py-2 text-sm font-semibold text-green-100 transition hover:bg-white/10 hover:text-white"
                 >
                   Cancel
                 </button>
@@ -494,183 +500,198 @@ export default function StudentsAdminPage() {
 
             <form
               onSubmit={handleSubmit}
-              className="grid gap-6 p-6 md:grid-cols-2"
+              className="grid gap-6 p-6"
             >
 
               {/* STUDENT INFORMATION */}
 
-              <div className="md:col-span-2">
+              <div>
 
                 <div className="flex items-center gap-3">
 
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-green-100">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-100 text-lg">
                     🎓
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900">
+
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-green-950">
                       Student Information
                     </h3>
 
                     <p className="text-xs text-slate-500">
                       Basic information about the student
                     </p>
+
                   </div>
 
                 </div>
 
-                <div className="mt-4 h-px bg-slate-200" />
+                <div className="mt-4 h-px bg-green-900/10" />
 
               </div>
 
-              <FormField
-                label="Full Name"
-                required
-              >
-                <input
-                  type="text"
-                  value={fullName}
-                  onChange={(event) =>
-                    setFullName(event.target.value)
-                  }
-                  placeholder="Student full name"
-                  className={inputClass}
+              <div className="grid gap-5 md:grid-cols-2">
+
+                <FormField
+                  label="Full Name"
                   required
-                />
-              </FormField>
-
-              <FormField label="Student ID">
-                <input
-                  type="text"
-                  value={studentId}
-                  onChange={(event) =>
-                    setStudentId(event.target.value)
-                  }
-                  placeholder="e.g. PVA-2026-001"
-                  className={inputClass}
-                />
-              </FormField>
-
-              <FormField label="Class">
-                <input
-                  type="text"
-                  value={className}
-                  onChange={(event) =>
-                    setClassName(event.target.value)
-                  }
-                  placeholder="e.g. Primary 4"
-                  className={inputClass}
-                />
-              </FormField>
-
-              <FormField label="Gender">
-                <select
-                  value={gender}
-                  onChange={(event) =>
-                    setGender(event.target.value)
-                  }
-                  className={inputClass}
                 >
-                  <option value="">
-                    Select gender
-                  </option>
-                  <option value="Male">
-                    Male
-                  </option>
-                  <option value="Female">
-                    Female
-                  </option>
-                </select>
-              </FormField>
+                  <input
+                    type="text"
+                    value={fullName}
+                    onChange={(event) =>
+                      setFullName(event.target.value)
+                    }
+                    placeholder="Student full name"
+                    className={inputClass}
+                    required
+                  />
+                </FormField>
 
-              <FormField label="Date of Birth">
-                <input
-                  type="date"
-                  value={dateOfBirth}
-                  onChange={(event) =>
-                    setDateOfBirth(event.target.value)
-                  }
-                  className={inputClass}
-                />
-              </FormField>
+                <FormField label="Student ID">
+                  <input
+                    type="text"
+                    value={studentId}
+                    onChange={(event) =>
+                      setStudentId(event.target.value)
+                    }
+                    placeholder="e.g. PVA-2026-001"
+                    className={inputClass}
+                  />
+                </FormField>
+
+                <FormField label="Class">
+                  <input
+                    type="text"
+                    value={className}
+                    onChange={(event) =>
+                      setClassName(event.target.value)
+                    }
+                    placeholder="e.g. Primary 4"
+                    className={inputClass}
+                  />
+                </FormField>
+
+                <FormField label="Gender">
+                  <select
+                    value={gender}
+                    onChange={(event) =>
+                      setGender(event.target.value)
+                    }
+                    className={inputClass}
+                  >
+                    <option value="">
+                      Select gender
+                    </option>
+
+                    <option value="Male">
+                      Male
+                    </option>
+
+                    <option value="Female">
+                      Female
+                    </option>
+
+                  </select>
+                </FormField>
+
+                <FormField label="Date of Birth">
+                  <input
+                    type="date"
+                    value={dateOfBirth}
+                    onChange={(event) =>
+                      setDateOfBirth(event.target.value)
+                    }
+                    className={inputClass}
+                  />
+                </FormField>
+
+              </div>
 
               {/* PARENT INFORMATION */}
 
-              <div className="mt-2 md:col-span-2">
+              <div className="mt-2">
 
                 <div className="flex items-center gap-3">
 
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 text-lg">
                     👨‍👩‍👧
                   </div>
 
                   <div>
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900">
+
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-blue-950">
                       Parent / Guardian Information
                     </h3>
 
                     <p className="text-xs text-slate-500">
                       Contact information for the parent or guardian
                     </p>
+
                   </div>
 
                 </div>
 
-                <div className="mt-4 h-px bg-slate-200" />
+                <div className="mt-4 h-px bg-blue-900/10" />
 
               </div>
 
-              <FormField label="Parent / Guardian Name">
-                <input
-                  type="text"
-                  value={parentName}
-                  onChange={(event) =>
-                    setParentName(event.target.value)
-                  }
-                  placeholder="Parent or guardian name"
-                  className={inputClass}
-                />
-              </FormField>
+              <div className="grid gap-5 md:grid-cols-2">
 
-              <FormField label="Parent / Guardian Phone">
-                <input
-                  type="tel"
-                  value={parentPhone}
-                  onChange={(event) =>
-                    setParentPhone(event.target.value)
-                  }
-                  placeholder="Phone number"
-                  className={inputClass}
-                />
-              </FormField>
+                <FormField label="Parent / Guardian Name">
+                  <input
+                    type="text"
+                    value={parentName}
+                    onChange={(event) =>
+                      setParentName(event.target.value)
+                    }
+                    placeholder="Parent or guardian name"
+                    className={inputClass}
+                  />
+                </FormField>
 
-              <FormField label="Parent / Guardian Email">
-                <input
-                  type="email"
-                  value={parentEmail}
-                  onChange={(event) =>
-                    setParentEmail(event.target.value)
-                  }
-                  placeholder="Email address"
-                  className={inputClass}
-                />
-              </FormField>
+                <FormField label="Parent / Guardian Phone">
+                  <input
+                    type="tel"
+                    value={parentPhone}
+                    onChange={(event) =>
+                      setParentPhone(event.target.value)
+                    }
+                    placeholder="Phone number"
+                    className={inputClass}
+                  />
+                </FormField>
 
-              <FormField label="Address">
-                <input
-                  type="text"
-                  value={address}
-                  onChange={(event) =>
-                    setAddress(event.target.value)
-                  }
-                  placeholder="Home address"
-                  className={inputClass}
-                />
-              </FormField>
+                <FormField label="Parent / Guardian Email">
+                  <input
+                    type="email"
+                    value={parentEmail}
+                    onChange={(event) =>
+                      setParentEmail(event.target.value)
+                    }
+                    placeholder="Email address"
+                    className={inputClass}
+                  />
+                </FormField>
+
+                <FormField label="Address">
+                  <input
+                    type="text"
+                    value={address}
+                    onChange={(event) =>
+                      setAddress(event.target.value)
+                    }
+                    placeholder="Home address"
+                    className={inputClass}
+                  />
+                </FormField>
+
+              </div>
 
               {/* NOTES */}
 
-              <div className="md:col-span-2">
+              <div className="rounded-2xl border border-amber-900/10 bg-[#fffaf0] p-5">
 
                 <FormField label="Notes">
 
@@ -681,7 +702,7 @@ export default function StudentsAdminPage() {
                     }
                     placeholder="Additional information about the student..."
                     rows={4}
-                    className={`${inputClass} resize-none`}
+                    className={`${inputClass} resize-none bg-white`}
                   />
 
                 </FormField>
@@ -690,7 +711,7 @@ export default function StudentsAdminPage() {
 
               {/* FORM ACTIONS */}
 
-              <div className="flex flex-col-reverse gap-3 border-t border-slate-200 pt-5 sm:flex-row md:col-span-2">
+              <div className="flex flex-col-reverse gap-3 border-t border-green-900/10 pt-5 sm:flex-row sm:justify-end">
 
                 <button
                   type="button"
@@ -703,7 +724,7 @@ export default function StudentsAdminPage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="rounded-xl bg-green-800 px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="rounded-xl bg-[#123b2a] px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {saving
                     ? 'Saving...'
@@ -722,13 +743,17 @@ export default function StudentsAdminPage() {
 
         {/* SEARCH */}
 
-        <div className="mt-7 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="mt-7 rounded-2xl border border-green-900/10 bg-[#f5f9f6] p-5 shadow-sm">
 
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
 
             <div>
 
-              <h2 className="text-lg font-bold text-slate-950">
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-green-700">
+                Student Database
+              </span>
+
+              <h2 className="mt-1 text-lg font-bold text-green-950">
                 Student Records
               </h2>
 
@@ -757,7 +782,7 @@ export default function StudentsAdminPage() {
                     setSearch(event.target.value)
                   }
                   placeholder="Name, ID, class, parent or phone..."
-                  className="w-full rounded-xl border border-slate-300 bg-slate-50 py-3 pl-11 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:bg-white focus:ring-2 focus:ring-green-100"
+                  className="w-full rounded-xl border border-green-900/15 bg-white py-3 pl-11 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100"
                 />
 
               </div>
@@ -766,18 +791,24 @@ export default function StudentsAdminPage() {
 
           </div>
 
-          <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-4">
+          <div className="mt-4 flex items-center justify-between border-t border-green-900/10 pt-4">
 
             <p className="text-sm text-slate-500">
+
               Showing{' '}
-              <span className="font-bold text-slate-900">
+
+              <span className="font-bold text-green-950">
                 {filteredStudents.length}
               </span>{' '}
+
               of{' '}
-              <span className="font-bold text-slate-900">
+
+              <span className="font-bold text-green-950">
                 {students.length}
               </span>{' '}
+
               students
+
             </p>
 
             {search && (
@@ -806,18 +837,18 @@ export default function StudentsAdminPage() {
 
                 <div
                   key={item}
-                  className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+                  className="rounded-2xl border border-green-900/10 bg-[#f7fbf8] p-6 shadow-sm"
                 >
 
                   <div className="animate-pulse">
 
                     <div className="flex gap-4">
 
-                      <div className="h-12 w-12 rounded-full bg-slate-200" />
+                      <div className="h-12 w-12 rounded-xl bg-green-100" />
 
                       <div className="flex-1">
 
-                        <div className="h-5 w-2/3 rounded bg-slate-200" />
+                        <div className="h-5 w-2/3 rounded bg-green-100" />
 
                         <div className="mt-2 h-4 w-1/3 rounded bg-slate-200" />
 
@@ -843,29 +874,33 @@ export default function StudentsAdminPage() {
 
           ) : filteredStudents.length === 0 ? (
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm">
+            <div className="rounded-2xl border border-green-900/10 bg-[#f7fbf8] p-12 text-center shadow-sm">
 
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-green-50 text-3xl">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-green-100 text-3xl">
                 🎓
               </div>
 
-              <h2 className="mt-5 text-xl font-bold text-slate-950">
+              <h2 className="mt-5 text-xl font-bold text-green-950">
+
                 {students.length === 0
                   ? 'No students yet'
                   : 'No students found'}
+
               </h2>
 
               <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
+
                 {students.length === 0
                   ? 'Add your first student to begin building your student records.'
                   : 'No student records match your current search. Try another name, ID or class.'}
+
               </p>
 
               {students.length === 0 && (
                 <button
                   type="button"
                   onClick={startAddStudent}
-                  className="mt-6 rounded-xl bg-green-800 px-5 py-3 text-sm font-bold text-white transition hover:bg-green-700"
+                  className="mt-6 rounded-xl bg-[#123b2a] px-5 py-3 text-sm font-bold text-white transition hover:bg-green-800"
                 >
                   + Add First Student
                 </button>
@@ -881,22 +916,22 @@ export default function StudentsAdminPage() {
 
                 <article
                   key={student.id}
-                  className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:border-green-200 hover:shadow-lg"
+                  className="group overflow-hidden rounded-2xl border border-green-900/10 bg-[#f8fbf9] shadow-sm transition duration-200 hover:-translate-y-1 hover:border-green-300 hover:shadow-lg"
                 >
 
                   {/* CARD HEADER */}
 
-                  <div className="border-b border-slate-100 bg-slate-50 px-6 py-5">
+                  <div className="border-b border-green-900/10 bg-[#e6f1e9] px-6 py-5">
 
                     <div className="flex items-start gap-4">
 
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-green-100 text-2xl">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-green-700 text-2xl text-white shadow-sm">
                         🎓
                       </div>
 
                       <div className="min-w-0 flex-1">
 
-                        <h2 className="truncate text-lg font-bold text-slate-950">
+                        <h2 className="truncate text-lg font-bold text-green-950">
                           {student.full_name}
                         </h2>
 
@@ -922,7 +957,7 @@ export default function StudentsAdminPage() {
 
                   {/* CARD DETAILS */}
 
-                  <div className="space-y-3 px-6 py-5">
+                  <div className="space-y-3 bg-[#f8fbf9] px-6 py-5">
 
                     <InfoRow
                       label="Class"
@@ -948,14 +983,14 @@ export default function StudentsAdminPage() {
 
                   {/* CARD ACTIONS */}
 
-                  <div className="grid grid-cols-3 gap-2 border-t border-slate-100 bg-white px-5 py-4">
+                  <div className="grid grid-cols-3 gap-2 border-t border-green-900/10 bg-[#edf5ef] px-5 py-4">
 
                     <button
                       type="button"
                       onClick={() =>
                         setSelectedStudent(student)
                       }
-                      className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 transition hover:border-green-200 hover:bg-green-50 hover:text-green-800"
+                      className="rounded-lg border border-green-900/10 bg-white px-3 py-2 text-xs font-bold text-slate-700 transition hover:border-green-200 hover:bg-green-50 hover:text-green-800"
                     >
                       Details
                     </button>
@@ -965,7 +1000,7 @@ export default function StudentsAdminPage() {
                       onClick={() =>
                         startEditStudent(student)
                       }
-                      className="rounded-lg bg-slate-950 px-3 py-2 text-xs font-bold text-white transition hover:bg-slate-800"
+                      className="rounded-lg bg-[#123b2a] px-3 py-2 text-xs font-bold text-white transition hover:bg-green-800"
                     >
                       Edit
                     </button>
@@ -975,7 +1010,7 @@ export default function StudentsAdminPage() {
                       onClick={() =>
                         deleteStudent(student)
                       }
-                      className="rounded-lg border border-red-200 px-3 py-2 text-xs font-bold text-red-600 transition hover:bg-red-50"
+                      className="rounded-lg border border-red-200 bg-white px-3 py-2 text-xs font-bold text-red-600 transition hover:bg-red-50"
                     >
                       Delete
                     </button>
@@ -999,7 +1034,7 @@ export default function StudentsAdminPage() {
       {selectedStudent && (
 
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 p-4 backdrop-blur-sm"
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) {
               setSelectedStudent(null)
@@ -1007,23 +1042,23 @@ export default function StudentsAdminPage() {
           }}
         >
 
-          <div className="max-h-[92vh] w-full max-w-2xl overflow-hidden rounded-2xl bg-white shadow-2xl">
+          <div className="max-h-[92vh] w-full max-w-2xl overflow-hidden rounded-2xl border border-green-900/10 bg-[#f7fbf8] shadow-2xl">
 
             {/* MODAL HEADER */}
 
-            <div className="bg-slate-950 px-6 py-6">
+            <div className="bg-[#123b2a] px-6 py-6">
 
               <div className="flex items-start justify-between gap-4">
 
                 <div className="flex items-center gap-4">
 
-                  <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-green-700 text-2xl">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#d6a84f] text-2xl text-[#173322] shadow-sm">
                     🎓
                   </div>
 
                   <div>
 
-                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-400">
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-300">
                       Student Details
                     </p>
 
@@ -1032,7 +1067,7 @@ export default function StudentsAdminPage() {
                     </h2>
 
                     {selectedStudent.student_id && (
-                      <p className="mt-1 text-sm text-slate-400">
+                      <p className="mt-1 text-sm text-green-100/60">
                         Student ID: {selectedStudent.student_id}
                       </p>
                     )}
@@ -1046,7 +1081,7 @@ export default function StudentsAdminPage() {
                   onClick={() =>
                     setSelectedStudent(null)
                   }
-                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-700 text-xl text-slate-400 transition hover:bg-slate-800 hover:text-white"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/15 text-xl text-green-100/60 transition hover:bg-white/10 hover:text-white"
                 >
                   ×
                 </button>
@@ -1057,7 +1092,7 @@ export default function StudentsAdminPage() {
 
             {/* MODAL CONTENT */}
 
-            <div className="max-h-[65vh] overflow-y-auto p-6">
+            <div className="max-h-[65vh] overflow-y-auto bg-[#f7fbf8] p-6">
 
               <div className="grid gap-6 sm:grid-cols-2">
 
@@ -1138,7 +1173,7 @@ export default function StudentsAdminPage() {
                     Additional Notes
                   </SectionHeading>
 
-                  <div className="mt-4 rounded-xl bg-slate-50 p-4">
+                  <div className="mt-4 rounded-xl border border-amber-900/10 bg-[#fffaf0] p-4">
 
                     <p className="whitespace-pre-wrap text-sm leading-6 text-slate-700">
                       {selectedStudent.notes ||
@@ -1166,7 +1201,7 @@ export default function StudentsAdminPage() {
 
             {/* MODAL FOOTER */}
 
-            <div className="flex flex-col-reverse gap-3 border-t border-slate-200 bg-slate-50 p-5 sm:flex-row sm:justify-end">
+            <div className="flex flex-col-reverse gap-3 border-t border-green-900/10 bg-[#e9f2eb] p-5 sm:flex-row sm:justify-end">
 
               <button
                 type="button"
@@ -1185,7 +1220,7 @@ export default function StudentsAdminPage() {
                   setSelectedStudent(null)
                   startEditStudent(student)
                 }}
-                className="rounded-xl bg-slate-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-slate-800"
+                className="rounded-xl bg-[#123b2a] px-5 py-3 text-sm font-bold text-white transition hover:bg-green-800"
               >
                 Edit Student
               </button>
@@ -1207,7 +1242,7 @@ export default function StudentsAdminPage() {
 /* -------------------------------------------------------------------------- */
 
 const inputClass =
-  'w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100'
+  'w-full rounded-xl border border-green-900/15 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-green-700 focus:ring-2 focus:ring-green-100'
 
 function FormField({
   label,
@@ -1222,14 +1257,17 @@ function FormField({
     <div>
       <label className="mb-2 block text-sm font-bold text-slate-700">
         {label}
+
         {required && (
           <span className="ml-1 text-red-500">
             *
           </span>
         )}
+
       </label>
 
       {children}
+
     </div>
   )
 }
@@ -1242,7 +1280,7 @@ function InfoRow({
   value: string
 }) {
   return (
-    <div className="flex items-start justify-between gap-4 border-b border-slate-100 pb-3 last:border-0 last:pb-0">
+    <div className="flex items-start justify-between gap-4 border-b border-green-900/10 pb-3 last:border-0 last:pb-0">
 
       <span className="text-sm text-slate-500">
         {label}
@@ -1266,7 +1304,7 @@ function DetailItem({
   return (
     <div>
 
-      <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-slate-400">
+      <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-green-800/55">
         {label}
       </p>
 
@@ -1284,11 +1322,11 @@ function SectionHeading({
   children: React.ReactNode
 }) {
   return (
-    <div className="flex items-center gap-3 border-b border-slate-200 pb-3">
+    <div className="flex items-center gap-3 border-b border-green-900/10 pb-3">
 
       <div className="h-5 w-1 rounded-full bg-green-700" />
 
-      <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900">
+      <h3 className="text-sm font-bold uppercase tracking-wider text-green-950">
         {children}
       </h3>
 
