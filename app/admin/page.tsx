@@ -154,32 +154,52 @@ export default function AdminDashboard() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-100">
+    <main className="min-h-screen bg-slate-950 text-white">
+
       <div className="flex min-h-screen">
 
-        {/* Sidebar */}
+        {/* SIDEBAR */}
 
-        <aside className="hidden w-64 bg-slate-900 text-white md:block">
+        <aside className="hidden w-72 shrink-0 border-r border-slate-800 bg-slate-950 md:flex md:flex-col">
 
-          <div className="border-b border-slate-800 px-6 py-6">
+          {/* BRAND */}
 
-            <h1 className="text-lg font-bold">
-              Pleasantville Academy
-            </h1>
+          <div className="border-b border-slate-800 px-6 py-7">
 
-            <p className="mt-1 text-sm text-slate-400">
-              Admin Portal
-            </p>
+            <div className="flex items-center gap-3">
+
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-green-700 text-xl shadow-lg shadow-green-900/20">
+                🏫
+              </div>
+
+              <div>
+                <h1 className="text-base font-bold text-white">
+                  Pleasantville Academy
+                </h1>
+
+                <p className="mt-0.5 text-xs font-medium text-slate-500">
+                  Administration Portal
+                </p>
+              </div>
+
+            </div>
 
           </div>
 
-          <nav className="p-4">
+          {/* NAVIGATION */}
+
+          <nav className="flex-1 p-4">
+
+            <p className="mb-3 px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-600">
+              Main Menu
+            </p>
 
             <Link
               href="/admin"
-              className="flex items-center rounded-lg bg-white/10 px-4 py-3 text-sm font-medium"
+              className="flex items-center rounded-xl border border-green-700/30 bg-green-700/10 px-4 py-3 text-sm font-semibold text-green-400"
             >
-              📊
+              <span className="text-lg">📊</span>
+
               <span className="ml-3">
                 Dashboard
               </span>
@@ -187,9 +207,10 @@ export default function AdminDashboard() {
 
             <Link
               href="/"
-              className="mt-2 flex items-center rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-white/10 hover:text-white"
+              className="mt-2 flex items-center rounded-xl px-4 py-3 text-sm font-medium text-slate-400 transition hover:bg-slate-900 hover:text-white"
             >
-              🌐
+              <span className="text-lg">🌐</span>
+
               <span className="ml-3">
                 View Website
               </span>
@@ -197,32 +218,41 @@ export default function AdminDashboard() {
 
           </nav>
 
-          <div className="absolute bottom-6 w-64 px-4">
+          {/* LOGOUT */}
+
+          <div className="border-t border-slate-800 p-4">
 
             <button
               onClick={handleLogout}
-              className="w-full rounded-lg px-4 py-3 text-left text-sm text-slate-300 transition hover:bg-red-500/10 hover:text-red-300"
+              className="w-full rounded-xl px-4 py-3 text-left text-sm font-medium text-slate-400 transition hover:bg-red-500/10 hover:text-red-400"
             >
-              🚪 Logout
+              🚪
+              <span className="ml-3">
+                Logout
+              </span>
             </button>
 
           </div>
 
         </aside>
 
-        {/* Main */}
+        {/* MAIN CONTENT */}
 
-        <section className="flex-1">
+        <section className="min-w-0 flex-1">
 
-          {/* Header */}
+          {/* HEADER */}
 
-          <header className="border-b bg-white px-6 py-5">
+          <header className="border-b border-slate-800 bg-slate-950/95 px-6 py-5 backdrop-blur">
 
             <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
 
               <div>
 
-                <h2 className="text-2xl font-bold text-slate-900">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-500">
+                  Administration
+                </p>
+
+                <h2 className="mt-1 text-2xl font-bold text-white">
                   Admin Dashboard
                 </h2>
 
@@ -236,14 +266,14 @@ export default function AdminDashboard() {
 
                 <Link
                   href="/"
-                  className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                  className="rounded-xl border border-slate-700 bg-slate-900 px-4 py-2.5 text-sm font-semibold text-slate-300 transition hover:border-slate-600 hover:bg-slate-800 hover:text-white"
                 >
                   View Website
                 </Link>
 
                 <button
                   onClick={handleLogout}
-                  className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700 md:hidden"
+                  className="rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 md:hidden"
                 >
                   Logout
                 </button>
@@ -254,123 +284,177 @@ export default function AdminDashboard() {
 
           </header>
 
-          <div className="p-6">
+          <div className="p-6 lg:p-8">
 
-            {/* Welcome */}
+            {/* WELCOME */}
 
-            <div className="rounded-2xl bg-slate-900 p-6 text-white">
+            <div className="relative overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900 to-slate-950 p-7 shadow-xl">
 
-              <p className="text-sm text-slate-400">
-                Welcome back
-              </p>
+              <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-green-700/10 blur-3xl" />
 
-              <h3 className="mt-1 text-2xl font-bold">
-                Pleasantville Academy
-              </h3>
+              <div className="relative">
 
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
-                Manage your school website, admissions, events,
-                announcements, gallery and school information from
-                one place.
-              </p>
+                <p className="text-sm font-medium text-green-500">
+                  Welcome back
+                </p>
+
+                <h3 className="mt-2 text-2xl font-bold text-white lg:text-3xl">
+                  Pleasantville Academy
+                </h3>
+
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
+                  Manage your school website, admissions, events,
+                  announcements, gallery and school information from
+                  one professional administration portal.
+                </p>
+
+              </div>
 
             </div>
 
-            {/* Live Statistics */}
-
-            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-
-              {/* Students */}
-
-              <Link
-                href="/admin/students"
-                className="rounded-xl bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
-              >
-
-                <p className="text-sm text-slate-500">
-                  Students
-                </p>
-
-                <p className="mt-2 text-3xl font-bold text-slate-900">
-                  {loadingStats ? '...' : stats.students}
-                </p>
-
-                <p className="mt-2 text-xs font-semibold text-slate-400">
-                  Manage students →
-                </p>
-
-              </Link>
-
-              {/* Teachers */}
-
-              <Link
-                href="/admin/teachers"
-                className="rounded-xl bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
-              >
-
-                <p className="text-sm text-slate-500">
-                  Teachers & Staff
-                </p>
-
-                <p className="mt-2 text-3xl font-bold text-slate-900">
-                  {loadingStats ? '...' : stats.teachers}
-                </p>
-
-                <p className="mt-2 text-xs font-semibold text-slate-400">
-                  Manage staff →
-                </p>
-
-              </Link>
-
-              {/* Admissions */}
-
-              <Link
-                href="/admin/admissions"
-                className="rounded-xl bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
-              >
-
-                <p className="text-sm text-slate-500">
-                  Applications
-                </p>
-
-                <p className="mt-2 text-3xl font-bold text-slate-900">
-                  {loadingStats ? '...' : stats.applications}
-                </p>
-
-                <p className="mt-2 text-xs font-semibold text-slate-400">
-                  View applications →
-                </p>
-
-              </Link>
-
-              {/* Enquiries */}
-
-              <Link
-                href="/admin/enquiries"
-                className="rounded-xl bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
-              >
-
-                <p className="text-sm text-slate-500">
-                  Enquiries
-                </p>
-
-                <p className="mt-2 text-3xl font-bold text-green-700">
-                  {loadingStats ? '...' : stats.enquiries}
-                </p>
-
-                <p className="mt-2 text-xs font-semibold text-slate-400">
-                  View enquiries →
-                </p>
-
-              </Link>
-
-            </div>
-
-            {/* Website Statistics */}
+            {/* STATISTICS */}
 
             <div className="mt-8">
 
-              <h3 className="text-xl font-bold text-slate-900">
+              <div className="mb-4">
+
+                <h3 className="text-lg font-bold text-white">
+                  Quick Statistics
+                </h3>
+
+                <p className="mt-1 text-sm text-slate-500">
+                  Overview of your school records.
+                </p>
+
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+                {/* STUDENTS */}
+
+                <Link
+                  href="/admin/students"
+                  className="group rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-lg transition hover:-translate-y-1 hover:border-green-700/50 hover:bg-slate-900/80"
+                >
+
+                  <div className="flex items-center justify-between">
+
+                    <span className="text-2xl">
+                      🎓
+                    </span>
+
+                    <span className="text-xs font-semibold text-slate-600">
+                      STUDENTS
+                    </span>
+
+                  </div>
+
+                  <p className="mt-5 text-3xl font-bold text-white">
+                    {loadingStats ? '...' : stats.students}
+                  </p>
+
+                  <p className="mt-2 text-xs font-semibold text-slate-500 group-hover:text-green-400">
+                    Manage students →
+                  </p>
+
+                </Link>
+
+                {/* TEACHERS */}
+
+                <Link
+                  href="/admin/teachers"
+                  className="group rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-lg transition hover:-translate-y-1 hover:border-green-700/50 hover:bg-slate-900/80"
+                >
+
+                  <div className="flex items-center justify-between">
+
+                    <span className="text-2xl">
+                      👩‍🏫
+                    </span>
+
+                    <span className="text-xs font-semibold text-slate-600">
+                      STAFF
+                    </span>
+
+                  </div>
+
+                  <p className="mt-5 text-3xl font-bold text-white">
+                    {loadingStats ? '...' : stats.teachers}
+                  </p>
+
+                  <p className="mt-2 text-xs font-semibold text-slate-500 group-hover:text-green-400">
+                    Manage staff →
+                  </p>
+
+                </Link>
+
+                {/* APPLICATIONS */}
+
+                <Link
+                  href="/admin/admissions"
+                  className="group rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-lg transition hover:-translate-y-1 hover:border-green-700/50 hover:bg-slate-900/80"
+                >
+
+                  <div className="flex items-center justify-between">
+
+                    <span className="text-2xl">
+                      📝
+                    </span>
+
+                    <span className="text-xs font-semibold text-slate-600">
+                      ADMISSIONS
+                    </span>
+
+                  </div>
+
+                  <p className="mt-5 text-3xl font-bold text-white">
+                    {loadingStats ? '...' : stats.applications}
+                  </p>
+
+                  <p className="mt-2 text-xs font-semibold text-slate-500 group-hover:text-green-400">
+                    View applications →
+                  </p>
+
+                </Link>
+
+                {/* ENQUIRIES */}
+
+                <Link
+                  href="/admin/enquiries"
+                  className="group rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-lg transition hover:-translate-y-1 hover:border-green-700/50 hover:bg-slate-900/80"
+                >
+
+                  <div className="flex items-center justify-between">
+
+                    <span className="text-2xl">
+                      📨
+                    </span>
+
+                    <span className="text-xs font-semibold text-slate-600">
+                      ENQUIRIES
+                    </span>
+
+                  </div>
+
+                  <p className="mt-5 text-3xl font-bold text-green-500">
+                    {loadingStats ? '...' : stats.enquiries}
+                  </p>
+
+                  <p className="mt-2 text-xs font-semibold text-slate-500 group-hover:text-green-400">
+                    View enquiries →
+                  </p>
+
+                </Link>
+
+              </div>
+
+            </div>
+
+            {/* WEBSITE OVERVIEW */}
+
+            <div className="mt-10">
+
+              <h3 className="text-xl font-bold text-white">
                 Website Overview
               </h3>
 
@@ -382,7 +466,7 @@ export default function AdminDashboard() {
 
                 <Link
                   href="/admin/gallery"
-                  className="rounded-xl bg-white p-5 shadow-sm transition hover:shadow-md"
+                  className="group rounded-2xl border border-slate-800 bg-slate-900 p-5 transition hover:border-green-700/50 hover:bg-slate-900/80"
                 >
 
                   <div className="flex items-center justify-between">
@@ -391,13 +475,13 @@ export default function AdminDashboard() {
                       🖼️
                     </span>
 
-                    <span className="text-2xl font-bold text-slate-900">
+                    <span className="text-2xl font-bold text-white">
                       {loadingStats ? '...' : stats.gallery}
                     </span>
 
                   </div>
 
-                  <h4 className="mt-4 font-bold text-slate-900">
+                  <h4 className="mt-4 font-bold text-white">
                     Gallery Images
                   </h4>
 
@@ -409,7 +493,7 @@ export default function AdminDashboard() {
 
                 <Link
                   href="/admin/events"
-                  className="rounded-xl bg-white p-5 shadow-sm transition hover:shadow-md"
+                  className="group rounded-2xl border border-slate-800 bg-slate-900 p-5 transition hover:border-green-700/50 hover:bg-slate-900/80"
                 >
 
                   <div className="flex items-center justify-between">
@@ -418,13 +502,13 @@ export default function AdminDashboard() {
                       📅
                     </span>
 
-                    <span className="text-2xl font-bold text-slate-900">
+                    <span className="text-2xl font-bold text-white">
                       {loadingStats ? '...' : stats.events}
                     </span>
 
                   </div>
 
-                  <h4 className="mt-4 font-bold text-slate-900">
+                  <h4 className="mt-4 font-bold text-white">
                     Events
                   </h4>
 
@@ -436,7 +520,7 @@ export default function AdminDashboard() {
 
                 <Link
                   href="/admin/announcements"
-                  className="rounded-xl bg-white p-5 shadow-sm transition hover:shadow-md"
+                  className="group rounded-2xl border border-slate-800 bg-slate-900 p-5 transition hover:border-green-700/50 hover:bg-slate-900/80"
                 >
 
                   <div className="flex items-center justify-between">
@@ -445,13 +529,13 @@ export default function AdminDashboard() {
                       📢
                     </span>
 
-                    <span className="text-2xl font-bold text-slate-900">
+                    <span className="text-2xl font-bold text-white">
                       {loadingStats ? '...' : stats.announcements}
                     </span>
 
                   </div>
 
-                  <h4 className="mt-4 font-bold text-slate-900">
+                  <h4 className="mt-4 font-bold text-white">
                     Announcements
                   </h4>
 
@@ -465,11 +549,11 @@ export default function AdminDashboard() {
 
             </div>
 
-            {/* Management */}
+            {/* SCHOOL MANAGEMENT */}
 
             <div className="mt-10">
 
-              <h3 className="text-xl font-bold text-slate-900">
+              <h3 className="text-xl font-bold text-white">
                 School Management
               </h3>
 
@@ -484,14 +568,14 @@ export default function AdminDashboard() {
                   <Link
                     key={section.title}
                     href={section.href}
-                    className="group rounded-2xl bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                    className="group rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-lg transition hover:-translate-y-1 hover:border-green-700/50 hover:bg-slate-900/80 hover:shadow-xl"
                   >
 
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-2xl">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-slate-700 bg-slate-950 text-2xl">
                       {section.icon}
                     </div>
 
-                    <h4 className="mt-5 font-bold text-slate-900">
+                    <h4 className="mt-5 font-bold text-white">
                       {section.title}
                     </h4>
 
@@ -499,7 +583,7 @@ export default function AdminDashboard() {
                       {section.description}
                     </p>
 
-                    <p className="mt-5 text-sm font-semibold text-slate-900">
+                    <p className="mt-5 text-sm font-semibold text-green-500 transition group-hover:text-green-400">
                       Manage →
                     </p>
 
@@ -516,6 +600,7 @@ export default function AdminDashboard() {
         </section>
 
       </div>
+
     </main>
   )
 }
