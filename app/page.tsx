@@ -33,6 +33,8 @@ export default function Home() {
 
       <Gallery />
 
+      <Announcements />
+
       <Admissions />
 
       <Contact />
